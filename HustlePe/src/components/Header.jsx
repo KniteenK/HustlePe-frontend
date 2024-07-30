@@ -1,6 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import auth from './AuthPage'
+
 
 const Header = () => {
+  const navigate = useNavigate(); // Initialize navigate object for navigation
+
+  const handleLoginClick = () => {
+    navigate('/auth'); // Navigate to the login page
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/auth'); // Navigate to the signup page
+  };
+
   return (
     <header className="bg-black text-white p-4 w-full">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -12,8 +25,18 @@ const Header = () => {
           <a href="#pricing" className="text-lg hover:text-gray-400 transition duration-300">Pricing</a>
           <a href="#blog" className="text-lg hover:text-gray-400 transition duration-300">Blog</a>
           <a href="#contact" className="text-lg hover:text-gray-400 transition duration-300">Contact</a>
-          <button className="bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition duration-300">Login</button>
-          <button className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">Sign Up</button>
+          <button 
+            onClick={handleLoginClick} 
+            className="bg-gray-800 text-white py-2 px-4 rounded-full hover:bg-gray-700 transition duration-300"
+          >
+            Login
+          </button>
+          <button 
+            onClick={handleSignUpClick} 
+            className="bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300"
+          >
+            Sign Up
+          </button>
         </nav>
       </div>
     </header>
