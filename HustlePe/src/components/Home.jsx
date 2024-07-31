@@ -21,8 +21,8 @@ const Home = () => {
     <div className="flex flex-col min-h-screen bg-black text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <Header />
       <main className="flex-grow p-8 max-w-7xl mx-auto text-center">
-        <h1 className="text-6xl font-extrabold mb-6">Transform Your Marketing with HustlePe</h1>
-        <p className="text-xl mb-6">Automate Campaigns, Engage Audiences, and Boost Lead Generation with Our All-in-One Marketing Solution</p>
+         <h1 className="text-6xl font-extrabold mb-6">Empower Your Freelance Journey with HustlePe</h1>
+         <p className="text-xl mb-6">Navigate Your Path, Connect with Clients, and Elevate Your Career with Our Comprehensive Freelancing Platform</p>
         <div className="flex justify-center mb-6">
           {/* Replace with your testimonials component */}
           <img src="path-to-testimonials-image" alt="Testimonials" className="rounded-full shadow-lg" />

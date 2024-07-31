@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AuthPage = () => {
   const [isSignup, setIsSignup] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleFormSwitch = () => {
     setIsSignup(!isSignup);
@@ -10,6 +12,8 @@ const AuthPage = () => {
   const handleGoogleSignIn = () => {
     // Placeholder for Google sign-in functionality
     console.log('Google Sign-In button clicked');
+    localStorage.setItem('LoggedIn', true) ;
+    navigate('/Home') ;
   };
 
   return (
