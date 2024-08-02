@@ -4,6 +4,7 @@ import Header from './Header';
 import Card from './GigCard';
 import Footer from './Footer';
 import JobTabs from './JobTabs';
+import { FaSearch } from 'react-icons/fa';
 
 const mockData = {
   name: "Justin Case",
@@ -40,14 +41,17 @@ const Home = () => {
         <p className="text-lg mb-8">Trusted by 27,000+ creators</p>
         <button className="bg-blue-600 text-white py-3 px-8 rounded-full hover:bg-blue-700 transition duration-300 shadow-lg">Get Started</button>
         <div className="mt-8">
-          <input 
-            type="text" 
-            placeholder="Search for jobs..." 
-            value={searchQuery} 
-            onChange={handleSearchChange} 
-            className="w-full p-4 rounded-full text-gray-900"
-          />
-        </div>
+        <div className="relative w-full">
+      <input
+        type="text"
+        placeholder="Search for jobs..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+        className="w-full p-4 pl-12 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-500 text-xl" />
+    </div>
+    </div>
         {data ? (
           <div className="mt-12 text-left">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">Job Listings:</h2>
@@ -61,7 +65,7 @@ const Home = () => {
             </div>
           </div>
         ) : (
-          <p className="mt-8 mb-8 text-center text-gray-100">Find Listed Gigs</p>
+          <p className="mt-8 mb-8 text-center text-gray-800">.</p>
         )}
         <JobTabs/>
         <Card data={mockData}/>

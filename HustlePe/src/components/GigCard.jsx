@@ -26,7 +26,7 @@ const Card = ({ data }) => {
           <p className="text-gray-400 text-sm">{data.posts} Gigs</p>
         </div>
         <div className="w-5/6 p-4">
-          <h3 className="font-bold text-lg mb-2">Bio</h3>
+          <h3 className="font-bold text-lg mb-2">Description</h3>
           <p className="text-gray-300 mb-4">{data.bio}</p>
           <div className="flex justify-between items-center text-sm">
             <a href="#" className="text-blue-400 hover:underline">250$ spent</a>
