@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from './Header';
+import Card from './GigCard';
 import Footer from './Footer';
+import JobTabs from './JobTabs';
+
+const mockData = {
+  name: "Justin Case",
+  posts: 45,
+  bio: "Hello 👋, my name is Trump. We are looking for UI developer working with React on variety of Jamstack projects. Part of their time will also be dedicated to blogging and open source.",
+  joinDate: "01.01.2021",
+  avatar: "https://logowik.com/content/uploads/images/donald-trump-cartoon-design9372.logowik.com.webp" // Replace with actual avatar URL
+};
 
 const Home = () => {
   const [data, setData] = useState(null);
@@ -51,8 +61,10 @@ const Home = () => {
             </div>
           </div>
         ) : (
-          <p className="mt-12 text-center text-gray-500">Loading...</p>
+          <p className="mt-8 mb-8 text-center text-gray-100">Find Listed Gigs</p>
         )}
+        <JobTabs/>
+        <Card data={mockData}/>
       </main>
       <Footer />
     </div>
