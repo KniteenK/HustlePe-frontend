@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -5,20 +6,54 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const notify = () => {
-    toast.success('Logged in successfully', {
-      position: 'bottom-right',
-      autoClose: 1000,
-      style: {
-        backgroundColor: 'green',
-        color: 'white',
-      },
-    });
+  // const notify = () => {
+  //   toast.success('Logged in successfully', {
+  //     position: 'bottom-right',
+  //     autoClose: 1000,
+  //     style: {
+  //       backgroundColor: 'green',
+  //       color: 'white',
+  //     },
+  //   });
     
-    setTimeout(() => navigate('/Home'), 1000); // Redirect to dashboard after login
-  };
+  //   setTimeout(() => navigate('/Home'), 1000); // Redirect to dashboard after login
+  // };
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const onSubmit = async () =>{
+    if (email === '' || password === '') {
+      toast.error('Please fill all the fields', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+      });
+      return;
+    }
+    try {
+      const response = await axios.post(url, body);
+      if (response.status === 200) {
+        localStorage.setItem('loggedIn', 'true');
+        navigate('/Homepage', { state: { isUser: true } });
+        const { token } = response.data;
+        localStorage.setItem('authToken', token);
+      }
+      alert(isSignUp ? 'User created successfully' : 'Logged in successfully');
+      navigate('/Homepage', { state: { isUser: true } });
+    } catch (error) {
+
+      alert('An error occurred. Please try again.');
+
+      toast.error(error.response.data.message || 'An error occurred. Please try again.');
+
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -38,7 +73,8 @@ const Login = () => {
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
                 <div className="relative flex items-center">
-                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" />
+                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email}
+              onChange={handleEmailChange} />
                 </div>
               </div>
               <div>
@@ -46,8 +82,11 @@ const Login = () => {
                 <div className="relative flex items-center">
                   <input
                     name="password"
+
                     type={showPassword ? 'text' : 'password'}
                     required
+                    value={password}
+                    onChange={handlePasswordChange}
                     className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                     placeholder="Enter password"
                   />
@@ -66,7 +105,7 @@ const Login = () => {
               </div>
 
               <div className="mt-8">
-                <button type="button" className="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none" onClick={notify}>
+                <button type="button" className="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none" onClick={onSubmit}>
                   Log In
                 </button>
               </div>

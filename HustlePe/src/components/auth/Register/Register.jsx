@@ -5,18 +5,40 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const notify = () => {
-    toast.success('Signed up successfully', {
-      position: 'bottom-right',
-      autoClose: 1000,
-      style: {
-        backgroundColor: 'green',
-        color: 'white',
-      },
-    });
+  // const notify = () => {
+  //   toast.success('Signed up successfully', {
+  //     position: 'bottom-right',
+  //     autoClose: 1000,
+  //     style: {
+  //       backgroundColor: 'green',
+  //       color: 'white',
+  //     },
+  //   });
     
-    setTimeout(() => navigate('/home'), 1000);
-  };
+  //   setTimeout(() => navigate('/home'), 1000);
+  // };
+  const OnSubmit = () => {
+    if (username === '' || email === '' || password === '') {
+      toast.error('Please fill all the fields', {
+        position: 'bottom-right',
+        autoClose: 2000,
+        style: {
+          backgroundColor: 'red',
+          color: 'white',
+        },
+      });
+      return;
+    }else{
+      console.log(username, email, password);
+    }
+  }
+  
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,13 +60,15 @@ const Signup = () => {
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">User name</label>
                 <div className="relative flex items-center">
-                  <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" />
+                  <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" value={username}
+              onChange={handleUsernameChange} />
                 </div>
               </div>
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
                 <div className="relative flex items-center">
-                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" />
+                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email}
+              onChange={handleEmailChange} />
                 </div>
               </div>
               <div>
@@ -54,6 +78,8 @@ const Signup = () => {
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     required
+                    value={password}
+                    onChange={handlePasswordChange}
                     className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                     placeholder="Enter password"
                   />
@@ -72,12 +98,12 @@ const Signup = () => {
               </div>
 
               <div className="mt-8">
-                <button type="button" className="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none" onClick={notify}>
+                <button type="button" className="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none" onClick={OnSubmit}>
                   Sign Up
                 </button>
               </div>
 
-              <p className="mt-8 text-center text-sm text-gray-800">Already have an account? <Link to="/signin" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Log in here</Link></p>
+              <p className="mt-8 text-center text-sm text-gray-800">Already have an account? <Link to="/login" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Log in here</Link></p>
             </form>
           </div>
           <div className="lg:h-[400px] md:h-[300px] max-md:mt-8">
