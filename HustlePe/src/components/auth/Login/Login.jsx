@@ -37,6 +37,7 @@ const Login = () => {
       return;
     }
     try {
+      url = "http://localhost:2000/api/auth/login";
       const response = await axios.post(url, body);
       if (response.status === 200) {
         localStorage.setItem('loggedIn', 'true');
@@ -71,9 +72,9 @@ const Login = () => {
               </div>
 
               <div>
-                <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
+                <label className="text-gray-800 text-sm mb-2 block">Email / Username</label>
                 <div className="relative flex items-center">
-                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email}
+                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email or username" value={email}
               onChange={handleEmailChange} />
                 </div>
               </div>
