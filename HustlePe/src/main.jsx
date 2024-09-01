@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './Layout.jsx'
 import JobPosting from './components/Client/JobPosting/JobPosting.jsx'
 import Messages from './components/Client/Messages/Messages.jsx'
-import Home from './components/Home.jsx'
 import Intermediate from './components/auth/Intermediate.jsx'
 import Login from './components/auth/Login/Login.jsx'
 import Register from './components/auth/Register/Register.jsx'
@@ -15,10 +14,6 @@ const router = createBrowserRouter([
     path: '/',
     element:<Layout />,
     children: [
-      {
-        path: 'home',
-        element: <Home />
-      },
       
       {
         path: 'JobPosting',
