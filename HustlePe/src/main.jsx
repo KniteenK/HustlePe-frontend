@@ -2,11 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './Layout.jsx'
-import FindTalent from './components/FindTalent/findTalent.jsx'
-import FindWork from './components/FindWork/findWork.jsx'
+import JobPosting from './components/Client/JobPosting/JobPosting.jsx'
+import Messages from './components/Client/Messages/Messages.jsx'
 import Home from './components/Home.jsx'
+import Intermediate from './components/auth/Intermediate.jsx'
 import Login from './components/auth/Login/Login.jsx'
 import Register from './components/auth/Register/Register.jsx'
+import RegisterClient from './components/auth/Register/RegisterClient.jsx'
 import './index.css'
 const router = createBrowserRouter([
   {
@@ -19,12 +21,12 @@ const router = createBrowserRouter([
       },
       
       {
-        path: 'findwork',
-        element: <FindWork />
+        path: 'JobPosting',
+        element: <JobPosting />
       },
       {
-        path: 'findtalent',
-        element: <FindTalent />
+        path: 'Messages',
+        element: <Messages />
       }
       
 
@@ -37,7 +39,16 @@ const router = createBrowserRouter([
   {
     path: '/signup', // Separate route for register
     element: <Register /> // This route does not include the Layout (Header/Footer)
-  }
+  },
+  {
+    path: 'Intermediate',
+    element: <Intermediate />
+
+  },
+  {
+    path: 'RegisterClient',
+    element: <RegisterClient />
+    }
 ])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

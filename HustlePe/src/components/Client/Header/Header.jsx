@@ -1,6 +1,6 @@
 import { Button, Input, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 import React from "react";
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from "./Icons.jsx";
 
 export default function Header() { // Corrected component name from Home to Header
@@ -18,7 +18,7 @@ export default function Header() { // Corrected component name from Home to Head
     navigate('/login'); // Redirect to the login page
   };
   const handleSignupClick = () => {
-    navigate('/signup'); // Redirect to the register page
+    navigate('/Intermediate'); // Redirect to the register page
   };
 
   return (
@@ -104,17 +104,17 @@ export default function Header() { // Corrected component name from Home to Head
             </DropdownMenu>
           </Dropdown> */}
           <NavbarItem>
-            <NavLink to="/findwork" className={({ isActive }) =>
+            <NavLink to="/JobPosting" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Find Work
+              Job Posting
             </NavLink>
           </NavbarItem>
           <NavbarItem>
-            <NavLink to="/findtalent" className={({ isActive }) =>
+            <NavLink to="/Messages" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Find Talent
+              Messages
             </NavLink>
           </NavbarItem>
         </NavbarContent>

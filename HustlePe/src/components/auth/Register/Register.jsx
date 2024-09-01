@@ -1,24 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const navigate = useNavigate();
-  // const notify = () => {
-  //   toast.success('Signed up successfully', {
-  //     position: 'bottom-right',
-  //     autoClose: 1000,
-  //     style: {
-  //       backgroundColor: 'green',
-  //       color: 'white',
-  //     },
-  //   });
-    
-  //   setTimeout(() => navigate('/home'), 1000);
-  // };
+
   const OnSubmit = () => {
-    if (username === '' || email === '' || password === '') {
+    if (
+      username === '' || email === '' || password === '' || contactNumber === '' ||
+      firstName === '' || lastName === '' || city === '' || country === ''
+    ) {
       toast.error('Please fill all the fields', {
         position: 'bottom-right',
         autoClose: 2000,
@@ -28,17 +20,58 @@ const Signup = () => {
         },
       });
       return;
-    }else{
-      console.log(username, email, password);
+    } else {
+      console.log(username, email, password, contactNumber, firstName, lastName, city, country);
     }
   }
-  
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    // Fetch countries
+    fetch('https://restcountries.com/v3.1/all')
+      .then(response => response.json())
+      .then(data => {
+        const countryList = data.map(country => country.name.common).sort();
+        setCountries(countryList);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (country) {
+      // Fetch cities based on selected country
+      fetch(`https://countriesnow.space/api/v0.1/countries/cities`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ country })
+      })
+        .then(response => response.json())
+        .then(data => {
+          const cityList = data.data.sort();
+          setCities(cityList);
+        });
+    }
+  }, [country]);
+
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleContactNumberChange = (e) => setContactNumber(e.target.value);
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handleLastNameChange = (e) => setLastName(e.target.value);
+  const handleCityChange = (e) => setCity(e.target.value);
+  const handleCountryChange = (e) => setCountry(e.target.value);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,44 +90,58 @@ const Signup = () => {
                 <p className="text-gray-500 text-sm mt-4 leading-relaxed">Join us today! Start your journey with us.</p>
               </div>
 
-              <div>
-                <label className="text-gray-800 text-sm mb-2 block">User name</label>
-                <div className="relative flex items-center">
-                  <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" value={username}
-              onChange={handleUsernameChange} />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">First Name</label>
+                  <input name="firstName" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter first name" value={firstName} onChange={handleFirstNameChange} />
                 </div>
-              </div>
-              <div>
-                <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
-                <div className="relative flex items-center">
-                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email}
-              onChange={handleEmailChange} />
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">Last Name</label>
+                  <input name="lastName" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter last name" value={lastName} onChange={handleLastNameChange} />
                 </div>
-              </div>
-              <div>
-                <label className="text-gray-800 text-sm mb-2 block">Password</label>
-                <div className="relative flex items-center">
-                  <input
-                    name="password"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={handlePasswordChange}
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
-                    placeholder="Enter password"
-                  />
-                  <svg
-                    onClick={togglePasswordVisibility}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="#bbb"
-                    stroke="#bbb"
-                    className="w-[18px] h-[18px] absolute right-4 cursor-pointer"
-                    viewBox="0 0 128 128"
-                  >
-                    <path d={showPassword ? "M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994z" : "M64 16c-34.193 0-62.672 23.995-63.541 25.005-1.459 1.822-1.459 4.168 0 5.99.869 1.01 29.348 25.005 63.541 25.005 34.193 0 62.672-23.995 63.541-25.005 1.459-1.822 1.459-4.168 0-5.99C126.672 39.995 98.193 16 64 16zm-5.506 66.632L36.258 60.396l8.728-8.728 14.508 14.508 32.258-32.258 8.728 8.728-40.506 40.506z"}
-                    data-original="#000000"></path>
-                  </svg>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">Contact Number</label>
+                  <input name="contactNumber" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter contact number" value={contactNumber} onChange={handleContactNumberChange} />
                 </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
+                  <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email} onChange={handleEmailChange} />
+                </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">Country</label>
+                  <select name="country" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={country} onChange={handleCountryChange}>
+                    <option value="">Select country</option>
+                    {countries.map((country, index) => (
+                      <option key={index} value={country}>{country}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">City</label>
+                  <select name="city" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={city} onChange={handleCityChange}>
+                    <option value="">Select city</option>
+                    {cities.map((city, index) => (
+                      <option key={index} value={city}>{city}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                
+                
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">User name</label>
+                  <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" value={username} onChange={handleUsernameChange} />
+                </div>
+                <div>
+                  <label className="text-gray-800 text-sm mb-2 block">Password</label>
+                  <div className="relative flex items-center">
+                    <input name="password" type={showPassword ? 'text' : 'password'} required value={password} onChange={handlePasswordChange} className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter password" />
+                    <svg onClick={togglePasswordVisibility} xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" className="w-[18px] h-[18px] absolute right-4 cursor-pointer" viewBox="0 0 128 128">
+                      <path d={showPassword ? "M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994z" : "M64 16c-34.193 0-62.672 23.995-63.541 25.005-1.459 1.822-1.459 4.168 0 5.99.869 1.01 29.348 25.005 63.541 25.005 34.193 0 62.672-23.995 63.541-25.005 1.459-1.822 1.459-4.168 0-5.99C126.672 39.995 98.193 16 64 16zm-5.506 66.632L36.258 60.396l8.728-8.728 14.508 14.508 32.258-32.258 8.728 8.728-40.506 40.506z"} data-original="#000000"></path>
+                    </svg>
+                  </div>
+                </div>
+                
               </div>
 
               <div className="mt-8">
