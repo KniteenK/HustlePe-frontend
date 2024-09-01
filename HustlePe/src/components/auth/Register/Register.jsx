@@ -6,10 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const Signup = () => {
   const navigate = useNavigate();
 
-  const OnSubmit = () => {
+  const OnSubmit = async () => {
     if (
-      username === '' || email === '' || password === '' || contactNumber === '' ||
-      firstName === '' || lastName === '' || city === '' || country === ''
+      [username, email, password, contactNumber, firstName, lastName, city, country].some((field) => field.trim() === "")
     ) {
       toast.error('Please fill all the fields', {
         position: 'bottom-right',
@@ -20,10 +19,53 @@ const Signup = () => {
         },
       });
       return;
-    } else {
-      console.log(username, email, password, contactNumber, firstName, lastName, city, country);
     }
-  }
+
+    const requestBody = {
+      username,
+      email,
+      password,
+      contactNumber,
+      first_name: firstName,
+      last_name: lastName,
+      address: {
+        city,
+        country,
+      },
+    };
+
+    console.log('Request Body:', requestBody);
+
+    try {
+      const response = await fetch('http://localhost:2000/api/v1/hustler/signupHustler', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Account created successfully!', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+        navigate('/login');
+      } else {
+        toast.error(data.message || 'Failed to create account', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.', {
+        position: 'bottom-right',
+        autoClose: 2000,
+      });
+    }
+  };
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -78,7 +120,6 @@ const Signup = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   return (
     <div className="font-sans">
       <div className="min-h-[85vh] flex flex-col items-center justify-center py-6 px-4">
@@ -125,9 +166,6 @@ const Signup = () => {
                     ))}
                   </select>
                 </div>
-                
-                
-                
                 <div>
                   <label className="text-gray-800 text-sm mb-2 block">User name</label>
                   <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" value={username} onChange={handleUsernameChange} />
@@ -141,7 +179,6 @@ const Signup = () => {
                     </svg>
                   </div>
                 </div>
-                
               </div>
 
               <div className="mt-8">
