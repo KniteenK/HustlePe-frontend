@@ -37,7 +37,7 @@ const Login = () => {
       return;
     }
     try {
-      url = "http://localhost:2000/api/auth/login";
+      url = "http://localhost:2000/api/v1/hustler/signupHustler";
       const response = await axios.post(url, body);
       if (response.status === 200) {
         localStorage.setItem('loggedIn', 'true');
