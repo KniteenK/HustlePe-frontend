@@ -1,15 +1,15 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Header from './components/Client/Header/Header'
+import GuestHeader from './components/Guest/Header/GuestHeader'
 import Footer from './components/Footer/Footer'
-function Layout() {
+function GuestLayout() {
   return (
     <>
-    <Header />
+    <GuestHeader />
     <Outlet />
     <Footer />
     </>
   )
 }
 
-export default Layout
+export default GuestLayout

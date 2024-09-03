@@ -1,9 +1,8 @@
 import { Button, Input, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
 import React from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from "./Icons.jsx";
-
-export default function Header() { // Corrected component name from Home to Header
+import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from "../../../assets/Icons.jsx";
+function GuestHeader() {
   const navigate = useNavigate();
   const icons = {
     chevron: <ChevronDown fill="currentColor" size={16} />,
@@ -24,6 +23,7 @@ export default function Header() { // Corrected component name from Home to Head
   return (
     <header className="shadow sticky z-50 top-0">
       <Navbar>  
+        
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           {/* <Dropdown>
             <NavbarItem>
@@ -104,17 +104,24 @@ export default function Header() { // Corrected component name from Home to Head
             </DropdownMenu>
           </Dropdown> */}
           <NavbarItem>
-            <NavLink to="/JobPosting" className={({ isActive }) =>
+            <NavLink to="/KnowHustlers" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Job Posting
+              Know about Hustlers
             </NavLink>
           </NavbarItem>
           <NavbarItem>
             <NavLink to="/Messages" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Messages
+              Know about Clients
+            </NavLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavLink to="/KnowHustlers" className={({ isActive }) =>
+              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+            }>
+              Know about Organisations
             </NavLink>
           </NavbarItem>
         </NavbarContent>
@@ -146,3 +153,5 @@ export default function Header() { // Corrected component name from Home to Head
     </header>
   );
 }
+
+export default GuestHeader;
