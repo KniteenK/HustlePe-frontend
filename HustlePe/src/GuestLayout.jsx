@@ -12,4 +12,4 @@ function GuestLayout() {
   )
 }
 
-export default GuestLayout
+export default GuestLayout;
