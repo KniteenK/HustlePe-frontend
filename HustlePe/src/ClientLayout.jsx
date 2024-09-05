@@ -12,4 +12,4 @@ function ClientLayout() {
     )
   }
   
-  export default ClientLayout
+export default ClientLayout;
