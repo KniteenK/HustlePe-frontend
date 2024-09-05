@@ -41,7 +41,7 @@ export default function ClientHeader() {
                 <p className="font-bold">Signed in as</p>
                 <p className="font-bold">@tonyreichert</p>
               </DropdownItem>
-              <DropdownItem key="settings">
+              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings">
                 My Settings
               </DropdownItem>
               
