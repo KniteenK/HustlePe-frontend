@@ -17,15 +17,6 @@ const router = createBrowserRouter([
     element:<GuestLayout />,
     children: [
       
-      {
-        path: 'JobPosting',
-        element: <JobPosting />
-      },
-      {
-        path: 'Messages',
-        element: <Messages />
-      }
-      
 
     ]
   },
