@@ -10,21 +10,13 @@ import Intermediate from './components/auth/Intermediate.jsx'
 import Login from './components/auth/Login/Login.jsx'
 import Register from './components/auth/Register/Register.jsx'
 import RegisterClient from './components/auth/Register/RegisterClient.jsx'
+import ProfileSettings from './components/Client/Profile/ProfileSettings.jsx'
 import './index.css'
 const router = createBrowserRouter([
   {
     path: '/',
     element:<GuestLayout />,
     children: [
-      
-      {
-        path: 'JobPosting',
-        element: <JobPosting />
-      },
-      {
-        path: 'Messages',
-        element: <Messages />
-      }
       
 
     ]
@@ -41,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: 'Messages',
         element: <Messages />
+      },
+      {
+        path: 'ProfileSettings',
+        element: <ProfileSettings />
       }
       
 

@@ -37,24 +37,23 @@ const Login = () => {
       return;
     }
     try {
-      url = "http://localhost:2000/api/v1/hustler/signupHustler";
+      const url = "http://localhost:2000/api/v1/hustler/signInHustler";
+      const body = { email, password }; // Construct the request body
+      console.log(body);
       const response = await axios.post(url, body);
+    
       if (response.status === 200) {
-        localStorage.setItem('loggedIn', 'true');
-        navigate('/Homepage', { state: { isUser: true } });
-        const { token } = response.data;
-        localStorage.setItem('authToken', token);
+        console.log(response.data);
       }
       alert(isSignUp ? 'User created successfully' : 'Logged in successfully');
-      navigate('/Homepage', { state: { isUser: true } });
+      // navigate('/Homepage', { state: { isUser: true } });
     } catch (error) {
-
-      alert('An error occurred. Please try again.');
-
-      toast.error(error.response.data.message || 'An error occurred. Please try again.');
-
+      console.error('An error occurred:', error); // Log the error for debugging
+      const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
+      console.log(errorMessage);
+      toast.error(errorMessage);
     }
-  };
+    };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -111,7 +110,7 @@ const Login = () => {
                 </button>
               </div>
 
-              <p className="mt-8 text-center text-sm text-gray-800">Don't have an account? <Link to="/signup" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Sign up here</Link></p>
+              <p className="mt-8 text-center text-sm text-gray-800">Don't have an account? <Link to="/Intermediate" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Sign up here</Link></p>
             </form>
           </div>
           <div className="lg:h-[400px] md:h-[300px] max-md:mt-8">
