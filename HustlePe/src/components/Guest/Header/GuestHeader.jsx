@@ -110,13 +110,7 @@ function GuestHeader() {
               Know about Hustlers
             </NavLink>
           </NavbarItem>
-          <NavbarItem>
-            <NavLink to="/Messages" className={({ isActive }) =>
-              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
-            }>
-              Know about Clients
-            </NavLink>
-          </NavbarItem>
+          
           <NavbarItem>
             <NavLink to="/KnowHustlers" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
