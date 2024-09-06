@@ -1,9 +1,14 @@
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarContent, NavbarItem, User } from "@nextui-org/react";
 import Cookies from 'js-cookie';
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 export default function HustlerHeader() {
   const userData = JSON.parse(Cookies.get('userData') || '{}');
+  const navigate = useNavigate();
+  const handleLogout = () => {
+
+    navigate('/');
+  };
   useEffect(() => {
     console.log('User Data:', userData);
     console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
@@ -53,7 +58,7 @@ export default function HustlerHeader() {
                 <p className="font-bold">Signed in as</p>
                 <p className="font-bold">@{username}</p>
               </DropdownItem>
-              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings">
+              <DropdownItem key="settings" as={NavLink} to="/hustler/ProfileSettings/profile">
                 My Settings
               </DropdownItem>
               
@@ -65,7 +70,7 @@ export default function HustlerHeader() {
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" onClick={handleLogout}>
                 Log Out
               </DropdownItem>
             </DropdownMenu>
