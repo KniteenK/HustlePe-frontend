@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import HustlerHeader from './components/Client/Header/ClientHeader'
 import Footer from './components/Footer/Footer'
+import HustlerHeader from './components/Hustler/Header/HustlerHeader'
 function ClientLayout() {
     return (
       <>
