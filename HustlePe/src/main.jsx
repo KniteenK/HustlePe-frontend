@@ -9,14 +9,13 @@ import RegisterClient from './components/auth/Register/RegisterClient.jsx'
 import JobPosting from './components/Client/JobPosting/JobPosting.jsx'
 import Messages from './components/Client/Messages/Messages.jsx'
 import DocumentsAndSocialLinks from './components/Hustler/Header/ProfileSetting/DocumentsAndSocialLinks.jsx'
+import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti.jsx'
 import Gigs from './components/Hustler/Header/ProfileSetting/Gigs.jsx'
-import Logout from './components/Hustler/Header/ProfileSetting/Logout.jsx'
 import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo.jsx'
-import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
+// import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics.jsx'
 import GuestLayout from './GuestLayout.jsx'
 import HustlerLayout from './HustlerLayout.jsx'
-import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti.jsx'
 import './index.css'
 import ProfileSettingLayout from './ProfileSettingLayout.jsx'
 const router = createBrowserRouter([
@@ -41,10 +40,7 @@ const router = createBrowserRouter([
         path: 'Messages',
         element: <Messages />
       },
-      {
-        path: 'ProfileSettings',
-        element: <ProfileSettings />
-      }
+      
       
 
     ]
@@ -54,17 +50,14 @@ const router = createBrowserRouter([
     element: <HustlerLayout />,
     children: [
       {
-        path: 'ProfileSettings/*',
+        path: 'ProfileSettings',
         element: <ProfileSettingLayout />,
         children: [
           {
             path: 'profile',
             element: <ProfileInfo />,
           },
-          {
-            path: 'logout',
-            element: <Logout />,
-          },
+          
           {
             path: 'gigs',
             element: <Gigs />,
