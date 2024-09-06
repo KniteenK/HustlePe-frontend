@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Cookies from 'js-cookie';
 const Login = () => {
   const navigate = useNavigate();
+  
   // const notify = () => {
   //   toast.success('Logged in successfully', {
   //     position: 'bottom-right',
@@ -39,14 +40,25 @@ const Login = () => {
     try {
       const url = "http://localhost:2000/api/v1/hustler/signInHustler";
       const body = { email, password }; // Construct the request body
-      console.log(body);
+      // console.log(body);
       const response = await axios.post(url, body);
     
       if (response.status === 200) {
-        console.log(response.data);
+        console.log('Response data:', JSON.stringify(response.data, null, 2)); // Print the response data
+        // alert('Logged in successfully');
+        Cookies.set('userData', JSON.stringify(response.data), { expires: 1 }); // Expires in 7 days
+
+        const role = response.data.data.role;
+        console.log(role);
+        if (role === 'hustler') {
+          navigate('/hustler');
+        } else if (role === 'client') {
+          navigate('/client');
+        } else {
+          toast.error('Unknown role. Please contact support.');
+        }
       }
-      alert(isSignUp ? 'User created successfully' : 'Logged in successfully');
-      // navigate('/Homepage', { state: { isUser: true } });
+      
     } catch (error) {
       console.error('An error occurred:', error); // Log the error for debugging
       const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
