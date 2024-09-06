@@ -53,7 +53,7 @@ export default function HustlerHeader() {
                 <p className="font-bold">Signed in as</p>
                 <p className="font-bold">@{username}</p>
               </DropdownItem>
-              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings">
+              <DropdownItem key="settings" as={NavLink} to="/hustler/ProfileSettings">
                 My Settings
               </DropdownItem>
               
