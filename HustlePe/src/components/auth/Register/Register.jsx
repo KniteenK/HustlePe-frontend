@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import logo from '../../../assets/Images/Logo.png';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -122,6 +123,9 @@ const Signup = () => {
   };
   return (
     <div className="font-sans">
+      <div className="flex justify-start items-center w-full p-4 overflow-hidden">
+      <Link to="/"><img src={logo} alt="HustlePe Logo" className="h-28 w-auto cursor-pointer" /></Link>
+      </div>
       <div className="min-h-[85vh] flex flex-col items-center justify-center py-6 px-4">
         <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full">
           <div className="border border-gray-300 rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
