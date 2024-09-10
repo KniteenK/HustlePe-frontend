@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -8,14 +9,14 @@ const RegisterClient = () => {
     email: '',
     password: '',
     contactNumber: '',
-    country: '',
     city: '',
+    country: '',
     organisationName: '',
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch countries
@@ -50,11 +51,16 @@ const RegisterClient = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { username, email, password, contactNumber, city, country, organisationName } = formData;
+
     if (
-      formData.username === '' || formData.email === '' || formData.password === '' || formData.contactNumber === '' ||
-      formData.country === '' || formData.city === '' || formData.organisationName === ''
+      [username, email, password, contactNumber, city, country, organisationName].some((field) => field.trim() === "")
     ) {
       toast.error('Please fill all the fields', {
         position: 'bottom-right',
@@ -65,14 +71,51 @@ const RegisterClient = () => {
         },
       });
       return;
-    } else {
-      console.log(formData);
-      toast.success('Form submitted successfully!');
     }
-  };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    const requestBody = {
+      username,
+      email,
+      password,
+      contactNumber,
+      address: {
+        city,
+        country,
+      },
+      organisationName,
+    };
+
+    console.log('Request Body:', requestBody);
+
+    try {
+      const response = await fetch('http://localhost:2000/api/v1/client/signupClient', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Account created successfully!', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+        navigate('/login');
+      } else {
+        toast.error(data.message || 'Failed to create account', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.', {
+        position: 'bottom-right',
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
