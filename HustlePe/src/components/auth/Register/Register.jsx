@@ -45,7 +45,7 @@ const Signup = () => {
         },
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success('Account created successfully!', {
           position: 'bottom-right',
           autoClose: 2000,

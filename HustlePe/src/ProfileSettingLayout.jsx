@@ -13,7 +13,7 @@ const ProfileSettingLayout = () => {
   ];
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-full">
       {/* Sidebar */}
       <div className="w-64 text-black flex flex-col p-6">
         <h2 className="text-2xl font-bold mb-6">Menu</h2>
