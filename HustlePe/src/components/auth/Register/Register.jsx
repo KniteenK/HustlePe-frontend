@@ -1,8 +1,8 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const Signup = () => {
   const navigate = useNavigate();
 
@@ -37,24 +37,20 @@ const Signup = () => {
     console.log('Request Body:', requestBody);
 
     try {
-      const response = await fetch('http://localhost:2000/api/v1/hustler/signupHustler', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:2000/api/v1/hustler/signupHustler', requestBody, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 200) {
         toast.success('Account created successfully!', {
           position: 'bottom-right',
           autoClose: 2000,
         });
         navigate('/login');
       } else {
-        toast.error(data.message || 'Failed to create account', {
+        toast.error(response.data.message || 'Failed to create account', {
           position: 'bottom-right',
           autoClose: 2000,
         });

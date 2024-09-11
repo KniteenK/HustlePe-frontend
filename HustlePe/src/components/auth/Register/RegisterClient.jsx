@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,28 +21,26 @@ const RegisterClient = () => {
 
   useEffect(() => {
     // Fetch countries
-    fetch('https://restcountries.com/v3.1/all')
-      .then(response => response.json())
-      .then(data => {
-        const countryList = data.map(country => country.name.common).sort();
+    axios.get('https://restcountries.com/v3.1/all')
+      .then(response => {
+        const countryList = response.data.map(country => country.name.common).sort();
         setCountries(countryList);
+      })
+      .catch(error => {
+        console.error('Error fetching countries:', error);
       });
   }, []);
 
   useEffect(() => {
     if (formData.country) {
       // Fetch cities based on selected country
-      fetch(`https://countriesnow.space/api/v0.1/countries/cities`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ country: formData.country })
-      })
-        .then(response => response.json())
-        .then(data => {
-          const cityList = data.data.sort();
+      axios.post('https://countriesnow.space/api/v0.1/countries/cities', { country: formData.country })
+        .then(response => {
+          const cityList = response.data.data.sort();
           setCities(cityList);
+        })
+        .catch(error => {
+          console.error('Error fetching cities:', error);
         });
     }
   }, [formData.country]);
@@ -78,34 +77,30 @@ const RegisterClient = () => {
       email,
       password,
       contactNumber,
-      address: {
+    
         city,
         country,
-      },
+    
       organisationName,
     };
 
     console.log('Request Body:', requestBody);
 
     try {
-      const response = await fetch('http://localhost:2000/api/v1/client/signupClient', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:2000/api/v1/client/signupClient', requestBody, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 200) {
         toast.success('Account created successfully!', {
           position: 'bottom-right',
           autoClose: 2000,
         });
         navigate('/login');
       } else {
-        toast.error(data.message || 'Failed to create account', {
+        toast.error(response.data.message || 'Failed to create account', {
           position: 'bottom-right',
           autoClose: 2000,
         });
