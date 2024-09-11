@@ -78,8 +78,10 @@ const RegisterClient = () => {
         email,
         password,
         contactNumber,
-        city,
-        country,
+        address: {
+          city,
+          country,
+        },
         organisation: organisationName,
     };
 
