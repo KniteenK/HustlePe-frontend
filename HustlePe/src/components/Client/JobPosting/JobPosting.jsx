@@ -1,5 +1,6 @@
 import { Card, CardBody, CardFooter, CardHeader, Divider, Link } from "@nextui-org/react";
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const projects = [
   {
@@ -19,6 +20,11 @@ const projects = [
   // Add more projects as needed
 ];
 function JobPosting() {
+  const navigate = useNavigate();
+
+  const handlePostGig = () => {
+    navigate("/client/PostGig");
+  }
   return (
     <div className="flex flex-col h-full p-6 md:ml-11">
       <div className="text-left mb-6 w-full mt-10">
@@ -26,7 +32,7 @@ function JobPosting() {
         <div className="text-3xl md:text-5xl font-bold">for your project</div>
       </div>
       <div className="flex flex-col gap-4 items-start w-full mt-5 p-6">
-        <button className="bg-blue-500 text-white py-2 px-4 rounded w-full md:w-1/5">Post a Gig</button>
+        <button className="bg-blue-500 text-white py-2 px-4 rounded w-full md:w-1/5" onClick={handlePostGig}>Post a Gig</button>
         <a href="#ongoing-jobs" className="bg-green-500 text-white py-2 px-4 rounded w-full md:w-1/5 text-center">Gigs Posted</a>
       </div>
       <div id="ongoing-jobs" className="text-center mb-6 w-full mt-48"> {/* Increased top margin to create more space */}

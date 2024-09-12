@@ -1,8 +1,26 @@
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarContent, NavbarItem, User } from "@nextui-org/react";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import Cookies from 'js-cookie';
+import React, { useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function ClientHeader() {
+  const userData = JSON.parse(Cookies.get('userData') || '{}');
+  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    Cookies.remove('userData'); // Remove user data from cookies
+    navigate('/');
+  };
+
+  useEffect(() => {
+    console.log('User Data:', userData);
+    console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
+  }, []);
+
+  const username = userData.data?.user?.username || 'Client name';
+  const organisation = userData.data?.user?.organisation || 'Organisation name';
+  const avatar = userData.data?.user?.avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026024d';
+
   return (
     <header className="shadow sticky z-50 top-0">
       <Navbar>
@@ -29,31 +47,29 @@ export default function ClientHeader() {
                 as="button"
                 avatarProps={{
                   isBordered: true,
-                  src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                  src: avatar,
                 }}
                 className="transition-transform"
-                description="@tonyreichert"
-                name="Tony Reichert"
+                description={`@${organisation}`}
+                name={username}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
                 <p className="font-bold">Signed in as</p>
-                <p className="font-bold">@tonyreichert</p>
+                <p className="font-bold">@{username}</p>
               </DropdownItem>
-              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings">
+              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings/profile">
                 My Settings
               </DropdownItem>
-              
               <DropdownItem key="analytics">
                 Analytics
               </DropdownItem>
-              
               <DropdownItem key="configurations">Configurations</DropdownItem>
               <DropdownItem key="help_and_feedback">
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" onClick={handleLogout}>
                 Log Out
               </DropdownItem>
             </DropdownMenu>
