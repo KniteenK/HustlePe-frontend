@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
 import logo from '../../../assets/Images/Logo.png';
 
 const RegisterClient = () => {
@@ -20,11 +21,15 @@ const RegisterClient = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    // Fetch countries
+    // Fetch countries with flag URLs
     fetch('https://restcountries.com/v3.1/all')
       .then(response => response.json())
       .then(data => {
-        const countryList = data.map(country => country.name.common).sort();
+        const countryList = data.map(country => ({
+          label: country.name.common,
+          value: country.name.common,
+          flag: country.flags.png // Added flag URL
+        })).sort((a, b) => a.label.localeCompare(b.label));
         setCountries(countryList);
       });
   }, []);
@@ -116,21 +121,32 @@ const RegisterClient = () => {
                 </div>
                 <div>
                   <label className="text-gray-800 text-sm mb-2 block">Country</label>
-                  <select name="country" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={formData.country} onChange={handleChange}>
-                    <option value="">Select country</option>
-                    {countries.map((country, index) => (
-                      <option key={index} value={country}>{country}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={countries}
+                    placeholder="Select country"
+                    classNamePrefix="react-select"
+                    value={countries.find(c => c.value === formData.country)}
+                    onChange={option => handleChange({ target: { name: 'country', value: option.value } })}
+                    formatOptionLabel={country => (
+                      <div className="flex items-center">
+                        <img src={country.flag} alt={country.label} style={{ width: '20px', marginRight: '10px' }} />
+                        {country.label}
+                      </div>
+                    )}
+                    className="w-full text-sm text-gray-800 border border-gray-300 rounded-lg"
+                  />
                 </div>
                 <div>
                   <label className="text-gray-800 text-sm mb-2 block">City</label>
-                  <select name="city" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={formData.city} onChange={handleChange}>
-                    <option value="">Select city</option>
-                    {cities.map((city, index) => (
-                      <option key={index} value={city}>{city}</option>
-                    ))}
-                  </select>
+                  <Select
+                    options={cities.map(city => ({ label: city, value: city }))}
+                    placeholder="Select city"
+                    classNamePrefix="react-select"
+                    value={cities.find(c => c.value === formData.city)}
+                    onChange={option => handleChange({ target: { name: 'city', value: option.value } })}
+                    isDisabled={!formData.country} // Disable city dropdown until country is selected
+                    className="w-full text-sm text-gray-800 border border-gray-300 rounded-lg"
+                  />
                 </div>
                 <div>
                   <label className="text-gray-800 text-sm mb-2 block">Organisation Name</label>

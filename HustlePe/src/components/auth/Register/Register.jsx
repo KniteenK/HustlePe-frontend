@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Select from 'react-select';
+import { FlagIcon } from 'react-flag-kit';
 import logo from '../../../assets/Images/Logo.png';
 
 const Signup = () => {
@@ -79,15 +81,27 @@ const Signup = () => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
 
+  // Function to format the country options with flags
+const formatCountryOption = ({ value, label }) => (
+  <div className="flex items-center">
+    <FlagIcon code={value} size={24} className="mr-2" />
+    <span>{label}</span>
+  </div>
+);
+
   useEffect(() => {
     // Fetch countries
     fetch('https://restcountries.com/v3.1/all')
       .then(response => response.json())
       .then(data => {
-        const countryList = data.map(country => country.name.common).sort();
+        const countryList = data.map(country => ({
+          value: country.cca2, // ISO country code
+          label: country.name.common,
+        })).sort((a, b) => a.label.localeCompare(b.label));
         setCountries(countryList);
       });
   }, []);
+  
 
   useEffect(() => {
     if (country) {
@@ -152,24 +166,37 @@ const Signup = () => {
                   <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
                   <input name="email" type="email" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter email address" value={email} onChange={handleEmailChange} />
                 </div>
-                <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Country</label>
-                  <select name="country" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={country} onChange={handleCountryChange}>
-                    <option value="">Select country</option>
-                    {countries.map((country, index) => (
-                      <option key={index} value={country}>{country}</option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-gray-800 text-sm mb-2 block">City</label>
-                  <select name="city" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" value={city} onChange={handleCityChange}>
-                    <option value="">Select city</option>
-                    {cities.map((city, index) => (
-                      <option key={index} value={city}>{city}</option>
-                    ))}
-                  </select>
-                </div>
+                <Select
+                  value={country ? countries.find(c => c.label === country) : null}
+                  onChange={(option) => setCountry(option.label)}
+                  options={countries}
+                  formatOptionLabel={formatCountryOption}
+                  placeholder="Select country"
+                  className="text-sm"
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      padding: '8px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                    }),
+                  }}
+                />
+                <Select
+                  value={city ? { value: city, label: city } : null}
+                  onChange={(option) => setCity(option.label)}
+                  options={cities.map(city => ({ value: city, label: city }))}
+                  placeholder="Select city"
+                  className="text-sm"
+                  styles={{
+                    control: (provided) => ({
+                      ...provided,
+                      padding: '8px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                    }),
+                  }}
+                />
                 <div>
                   <label className="text-gray-800 text-sm mb-2 block">User name</label>
                   <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600" placeholder="Enter user name" value={username} onChange={handleUsernameChange} />
