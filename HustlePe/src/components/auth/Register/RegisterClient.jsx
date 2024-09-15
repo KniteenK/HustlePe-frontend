@@ -1,4 +1,6 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
@@ -11,14 +13,14 @@ const RegisterClient = () => {
     email: '',
     password: '',
     contactNumber: '',
-    country: '',
     city: '',
+    country: '',
     organisationName: '',
   });
-
+  const [showPassword, setShowPassword] = useState(false);
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch countries with flag URLs
@@ -31,23 +33,22 @@ const RegisterClient = () => {
           flag: country.flags.png // Added flag URL
         })).sort((a, b) => a.label.localeCompare(b.label));
         setCountries(countryList);
+      })
+      .catch(error => {
+        console.error('Error fetching countries:', error);
       });
   }, []);
 
   useEffect(() => {
     if (formData.country) {
       // Fetch cities based on selected country
-      fetch(`https://countriesnow.space/api/v0.1/countries/cities`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ country: formData.country })
-      })
-        .then(response => response.json())
-        .then(data => {
-          const cityList = data.data.sort();
+      axios.post('https://countriesnow.space/api/v0.1/countries/cities', { country: formData.country })
+        .then(response => {
+          const cityList = response.data.data.sort();
           setCities(cityList);
+        })
+        .catch(error => {
+          console.error('Error fetching cities:', error);
         });
     }
   }, [formData.country]);
@@ -57,11 +58,16 @@ const RegisterClient = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { username, email, password, contactNumber, city, country, organisationName } = formData;
+
     if (
-      formData.username === '' || formData.email === '' || formData.password === '' || formData.contactNumber === '' ||
-      formData.country === '' || formData.city === '' || formData.organisationName === ''
+      [username, email, password, contactNumber, city, country, organisationName].some((field) => field.trim() === "")
     ) {
       toast.error('Please fill all the fields', {
         position: 'bottom-right',
@@ -72,14 +78,47 @@ const RegisterClient = () => {
         },
       });
       return;
-    } else {
-      console.log(formData);
-      toast.success('Form submitted successfully!');
     }
-  };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+    const requestBody = {
+      username,
+      email,
+      password,
+      contactNumber,
+    
+        city,
+        country,
+    
+      organisationName,
+    };
+
+    console.log('Request Body:', requestBody);
+
+    try {
+      const response = await axios.post('http://localhost:2000/api/v1/client/signupClient', requestBody, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success('Account created successfully!', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+        navigate('/login');
+      } else {
+        toast.error(response.data.message || 'Failed to create account', {
+          position: 'bottom-right',
+          autoClose: 2000,
+        });
+      }
+    } catch (error) {
+      toast.error('An error occurred. Please try again.', {
+        position: 'bottom-right',
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
