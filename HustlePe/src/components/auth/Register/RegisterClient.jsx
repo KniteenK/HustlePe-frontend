@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
 import Select from 'react-select';
+
+
 import logo from '../../../assets/Images/Logo.png';
 
 const RegisterClient = () => {
@@ -67,65 +68,66 @@ const RegisterClient = () => {
     const { username, email, password, contactNumber, city, country, organisationName } = formData;
 
     if (
-      [username, email, password, contactNumber, city, country, organisationName].some((field) => field.trim() === "")
+        [username, email, password, contactNumber, city, country, organisationName].some((field) => field.trim() === "")
     ) {
-      toast.error('Please fill all the fields', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        style: {
-          backgroundColor: 'red',
-          color: 'white',
-        },
-      });
-      return;
+        toast.error('Please fill all the fields', {
+            position: 'bottom-right',
+            autoClose: 2000,
+            style: {
+                backgroundColor: 'red',
+                color: 'white',
+            },
+        });
+        return;
     }
 
     const requestBody = {
-      username,
-      email,
-      password,
-      contactNumber,
-    
-        city,
-        country,
-    
-      organisationName,
+        username,
+        email,
+        password,
+        contactNumber,
+        address: {
+          city,
+          country,
+        },
+        organisation: organisationName,
     };
 
     console.log('Request Body:', requestBody);
 
     try {
-      const response = await axios.post('http://localhost:2000/api/v1/client/signupClient', requestBody, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await axios.post('http://localhost:2000/api/v1/client/signupClient', requestBody, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
 
-      if (response.status === 200) {
-        toast.success('Account created successfully!', {
-          position: 'bottom-right',
-          autoClose: 2000,
-        });
-        navigate('/login');
-      } else {
-        toast.error(response.data.message || 'Failed to create account', {
-          position: 'bottom-right',
-          autoClose: 2000,
-        });
-      }
+        if (response.status === 201) {
+            toast.success('Account created successfully!', {
+                position: 'bottom-right',
+                autoClose: 2000,
+            });
+            navigate('/login');
+        } else {
+            toast.error(response.data.message || 'Failed to create account', {
+                position: 'bottom-right',
+                autoClose: 2000,
+            });
+        }
     } catch (error) {
-      toast.error('An error occurred. Please try again.', {
-        position: 'bottom-right',
-        autoClose: 2000,
-      });
+        toast.error('An error occurred. Please try again.', {
+            position: 'bottom-right',
+            autoClose: 2000,
+        });
     }
-  };
+};
 
   return (
     <div className="font-sans">
       <div className="flex justify-start items-center w-full p-4 overflow-hidden">
-      <Link to="/">
-<img src={logo} alt="HustlePe Logo" className="h-28 w-auto cursor-pointer" /></Link>
+        <Link to="/">
+          <img src={logo} alt="HustlePe Logo" className="h-28 w-auto cursor-pointer" />
+        </Link>
       </div>
       <div className="min-h-[85vh] flex flex-col items-center justify-center py-6 px-4">
         <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full">

@@ -13,6 +13,7 @@ import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti.jsx'
 import Gigs from './components/Hustler/Header/ProfileSetting/Gigs.jsx'
 import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo.jsx'
 // import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
+import PostGig from './components/Client/JobPosting/PostGig/PostGig.jsx'
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics.jsx'
 import GuestLayout from './GuestLayout.jsx'
 import HustlerLayout from './HustlerLayout.jsx'
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: 'Messages',
         element: <Messages />
       },
+      {
+        path: 'PostGig',
+        element: <PostGig />
+      }
       
       
 
