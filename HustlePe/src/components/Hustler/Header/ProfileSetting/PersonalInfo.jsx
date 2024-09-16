@@ -2,14 +2,13 @@
 
 import { Button as FormButton } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Avatar, Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
+import { Avatar, Button, Input } from '@nextui-org/react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
@@ -62,30 +61,36 @@ function PersonalInfo() {
 
   // State for form inputs
   const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+const [newPassword, setNewPassword] = useState('');
 
-  const handleChangePassword = async () => {
-    if (!currentPassword || !newPassword) {
-      toast.error('Please fill both current password and new password');
-      return;
+const handleChangePassword = async (e) => {
+  e.preventDefault();
+  if (!currentPassword || !newPassword) {
+    toast.error('Please fill both current password and new password');
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:2000/api/v1/hustler/changePassword', {
+      currentPassword,
+      newPassword,
+    });
+
+    if (response.status === 200) {
+      toast.success('Password changed successfully');
+      setCurrentPassword('');
+      setNewPassword('');
     }
-
-    try {
-      const response = await axios.post('http://localhost:2000/api/v1/hustler/changePassword', {
-        currentPassword,
-        newPassword,
-      });
-
-      if (response.status === 200) {
-        toast.success('Password changed successfully');
-        setCurrentPassword('');
-        setNewPassword('');
-      }
-    } catch (error) {
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      toast.error('Invalid current password');
+    } else if (error.response && error.response.status === 404) {
+      toast.error('User not found');
+    } else {
       toast.error('Error changing password: ' + (error.response?.data?.message || error.message));
     }
-  };
-
+  }
+};
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -125,55 +130,12 @@ function PersonalInfo() {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-400">
+        <CardContent className="px-3 py-0 text-small text-default-400">
           <p>{bio}</p>
-        </CardBody>
+        </CardContent>
       </Card>
-      {/* password */}
-      <div className="p-4 mt-4">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">Change Password</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-black text-black">
-            <DialogHeader>
-              <DialogTitle>Change Password</DialogTitle>
-              <DialogDescription className="text-black">
-                Enter your current and new password. Click save when you're done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="currentPassword" className="text-right">
-                  Current Password
-                </Label>
-                <Input
-                  id="currentPassword"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="newPassword" className="text-right">
-                  New Password
-                </Label>
-                <Input
-                  id="newPassword"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="col-span-3"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button onClick={handleChangePassword}>Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+      {/* Password Change */}
+      
 
       {/* User Information Box */}
       <div className="p-4 mt-4">
@@ -200,6 +162,47 @@ function PersonalInfo() {
         ) : (
           <p>No education information available.</p>
         )}
+      </div>
+      <div className="p-4 mt-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Change Password</CardTitle>
+            <CardDescription>
+              Enter your current and new password. Click save when you're done.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleChangePassword} className="flex flex-col gap-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="currentPassword" className="text-right">
+                  Current Password
+                </Label>
+                <Input
+                  id="currentPassword"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="newPassword" className="text-right">
+                  New Password
+                </Label>
+                <Input
+                  id="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+              <CardFooter className="border-t px-6 py-4">
+                <Button type="submit">Save</Button>
+              </CardFooter>
+            </form>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Education Update Form */}
