@@ -36,6 +36,7 @@ function PostGig() {
   const [paymentMethod, setPaymentMethod] = useState("");
   const userData = JSON.parse(Cookies.get('userData') || '{}');
   const id = userData.data.user._id;
+
   const addSkill = () => {
     if (skillInput.trim() !== "") {
       setSkills([...skills, skillInput.trim()]);
