@@ -234,9 +234,8 @@ function PostGig() {
                           <SelectValue placeholder="Select payment method" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="paypal">PayPal</SelectItem>
-                          <SelectItem value="credit-card">Credit Card</SelectItem>
-                          <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
+                          <SelectItem value="milestone">Milestone</SelectItem>
+                          <SelectItem value="escrow">Escrow</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
