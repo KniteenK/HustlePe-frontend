@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export default function ClientHeader() {
-  const userData = JSON.parse(Cookies.get('userData') || '{}');
+  const userData = JSON.parse(Cookies.get('userdata') || '{}');
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -15,7 +15,7 @@ export default function ClientHeader() {
   useEffect(() => {
     console.log('User Data:', userData);
     console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
-  }, []);
+  }, [userData]);
 
   const username = userData.data?.user?.username || 'Client name';
   const organisation = userData.data?.user?.organisation || 'Organisation name';

@@ -45,9 +45,12 @@ const Login = () => {
       const response = await axios.post(url, body);
     
       if (response.status === 200) {
-        console.log('Response data:', JSON.stringify(response.data, null, 2)); // Print the response data
-        // alert('Logged in successfully');
-        Cookies.set('userData', JSON.stringify(response.data), { expires: 1 }); // Expires in 7 days
+        // console.log('Response data:', JSON.stringify(response)); // Print the response data
+        // console.log(response.data.data.userData)
+        alert('Logged in successfully');
+        Cookies.set('userData', JSON.stringify(response.data.data.userData), { expires: 1 }); // Expires in 7 days
+        Cookies.set('accessToken', JSON.stringify(response.data.data.accessToken))
+        Cookies.set('refreshToken', JSON.stringify(response.data.data.refreshToken))
 
         const role = response.data.data.role;
         console.log(role);
