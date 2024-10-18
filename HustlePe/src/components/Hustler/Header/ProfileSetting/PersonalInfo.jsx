@@ -48,20 +48,45 @@ function PersonalInfo() {
   }
 
   // Extract user data with optional chaining and default values
-  const avatar = userData.data?.user?.avatar || 'https://nextui.org/images/hero-card-complete.jpeg';
-  const firstName = userData.data?.user?.first_name || 'First Name';
-  const lastName = userData.data?.user?.last_name || 'Last Name';
-  const bio = userData.data?.user?.bio || 'No bio available';
-  const city = userData.data?.user?.address?.city || 'City';
-  const country = userData.data?.user?.address?.country || 'Country';
-  const username = userData.data?.user?.username || 'Username';
-  const email = userData.data?.user?.email || 'Email';
-  const contactNumber = userData.data?.user?.contactNumber || 'Contact Number';
-  const education = userData.data?.user?.education || [];
+  const avatar = userData.avatar || 'https://nextui.org/images/hero-card-complete.jpeg';
+  const firstName = userData.first_name || 'First Name';
+  const lastName = userData.last_name || 'Last Name';
+  const bio = userData.bio || 'No bio available';
+  const city = userData.address?.city || 'City';
+  const country = userData.address?.country || 'Country';
+  const username = userData.username || 'Username';
+  const email = userData.email || 'Email';
+  const contactNumber = userData.contactNumber || 'Contact Number';
+  const education = userData.education || [];
 
   // State for form inputs
   const [currentPassword, setCurrentPassword] = useState('');
 const [newPassword, setNewPassword] = useState('');
+const [newAvatar, setNewAvatar] = useState(null);
+
+const handleAvatarChange = async () => {
+  if (!newAvatar) {
+    toast.error('Please select an avatar to upload');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('avatar', newAvatar);
+
+  try {
+    const response = await axios.post('http://localhost:2000/api/v1/hustler/updateAvatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.status === 200) {
+      toast.success('Avatar updated successfully');
+    }
+  } catch (error) {
+    toast.error('Error updating avatar: ' + (error.response?.data?.message || error.message));
+  }
+};
 
 const handleChangePassword = async (e) => {
   e.preventDefault();
@@ -113,6 +138,7 @@ const handleChangePassword = async (e) => {
       toast.error('Error updating education details: ' + (error.response?.data?.message || error.message));
     }
   };
+  
 
   return (
     <div className="p-6 h-full">
@@ -128,12 +154,43 @@ const handleChangePassword = async (e) => {
               </h4>
               <h5 className="text-small tracking-tight text-default-400">@{username}</h5>
             </div>
+            
           </div>
         </CardHeader>
         <CardContent className="px-3 py-0 text-small text-default-400">
           <p>{bio}</p>
         </CardContent>
       </Card>
+      {/* Avatar Update */}
+      <div className="p-4 mt-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Change Avatar</CardTitle>
+            <CardDescription>
+              Select a new avatar to upload. Click save when you're done.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="newAvatar" className="text-right">
+                  New Avatar
+                </Label>
+                <Input
+                  id="newAvatar"
+                  type="file"
+                  onChange={(e) => setNewAvatar(e.target.files[0])}
+                  className="col-span-3"
+                />
+              </div>
+              <CardFooter className="border-t px-6 py-4">
+                <Button onClick={handleAvatarChange}>Save Avatar</Button>
+              </CardFooter>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Password Change */}
       
 
