@@ -14,12 +14,13 @@ export default function ClientHeader() {
 
   useEffect(() => {
     console.log('User Data:', userData);
+    console.log('Client Header');
     console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
   }, [userData]);
 
-  const username = userData.data?.user?.username || 'Client name';
-  const organisation = userData.data?.user?.organisation || 'Organisation name';
-  const avatar = userData.data?.user?.avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026024d';
+  const username = userData.username || 'Client name';
+  const organisation = userData.organisation || 'Organisation name';
+  const avatar = userData.avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026024d';
 
   return (
     <header className="shadow sticky z-50 top-0">

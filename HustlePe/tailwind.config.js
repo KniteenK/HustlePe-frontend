@@ -19,3 +19,7 @@ module.exports = {
   darkMode: ["class", "class"],
   plugins: [nextui(), require("tailwindcss-animate")],
 };
+
+
+
+

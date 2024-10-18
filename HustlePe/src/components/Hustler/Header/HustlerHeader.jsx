@@ -3,7 +3,17 @@ import Cookies from 'js-cookie';
 import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 export default function HustlerHeader() {
-  const userData = JSON.parse(Cookies.get('userData') || '{}');
+  let userData = {};
+  const userDataCookie = Cookies.get('userData');
+
+  if (userDataCookie) {
+    try {
+      userData = JSON.parse(userDataCookie);
+    } catch (error) {
+      console.error("Failed to parse userData cookie:", error);
+    }
+  }
+  console.log('User Data:', userData);
   const navigate = useNavigate();
   const handleLogout = () => {
 
@@ -12,12 +22,13 @@ export default function HustlerHeader() {
   useEffect(() => {
     console.log('User Data:', userData);
     console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
+    console.log('Hustler Header');
   }, []);
-  const username = userData.data?.user?.username || 'Hustler';
-  const firstName = userData.data?.user?.first_name || 'Tony';
-  const lastName = userData.data?.user?.last_name || 'Reichert';
+  const username = userData.username || 'Hustler';
+  const firstName = userData.first_name || 'Tony';
+  const lastName = userData.last_name || 'Reichert';
   const fullName = `${firstName} ${lastName}`;
-  const avatar = userData.data?.user?.avatar || ''; 
+  const avatar = userData.avatar || ''; 
   // console.log(name);
   console.log(username);
   return (
