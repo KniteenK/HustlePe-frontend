@@ -14,7 +14,10 @@ import Gigs from './components/Hustler/Header/ProfileSetting/Gigs.jsx'
 import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo.jsx'
 // import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
 import PostGig from './components/Client/JobPosting/PostGig/PostGig.jsx'
+import FindWork from './components/Hustler/Header/findWork/FindWork.jsx'
+import Organizations from './components/Hustler/Header/organizations/Organizations.jsx'
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics.jsx'
+import Resources from './components/Hustler/Header/resources/Resources.jsx'
 import GuestLayout from './GuestLayout.jsx'
 import HustlerLayout from './HustlerLayout.jsx'
 import './index.css'
@@ -81,6 +84,18 @@ const router = createBrowserRouter([
           }
         ],
       },
+      {
+        path: 'FindWork',
+        element: <FindWork />
+      },
+      {
+        path: 'Resources',
+        element: <Resources />
+      },
+      {
+        path: 'Organizations',
+        element: <Organizations />
+      }
     ],
   },
   {

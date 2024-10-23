@@ -36,17 +36,24 @@ export default function HustlerHeader() {
       <Navbar>
         <NavbarContent>
           <NavbarItem>
-            <NavLink to="/client/JobPosting" className={({ isActive }) =>
+            <NavLink to="/hustler/FindWork" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Job Posting
+              Find Work
             </NavLink>
           </NavbarItem>
           <NavbarItem>
-            <NavLink to="/client/Messages" className={({ isActive }) =>
+            <NavLink to="/hustler/Organizations" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Messages
+              Organizations
+            </NavLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavLink to="/hustler/Resources" className={({ isActive }) =>
+              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+            }>
+              Resources
             </NavLink>
           </NavbarItem>
         </NavbarContent>
