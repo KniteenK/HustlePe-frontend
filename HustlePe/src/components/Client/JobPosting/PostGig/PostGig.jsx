@@ -26,6 +26,7 @@ import { ChevronLeft } from "lucide-react";
 import React, { useState } from 'react';
 
 function PostGig() {
+  
   const [date, setDate] = useState(new Date());
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState("");
@@ -35,7 +36,9 @@ function PostGig() {
   const [payment, setPayment] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const userData = JSON.parse(Cookies.get('userData') || '{}');
-  const id = userData.data.user._id;
+  // console.log(userData);
+  console.log(userData._id);
+  const id = userData._id;
 
   const addSkill = () => {
     if (skillInput.trim() !== "") {
@@ -54,9 +57,9 @@ function PostGig() {
 
   const handleDateSelect = (selectedDate) => {
     setDate(selectedDate);
-    console.log(selectedDate);
+    // console.log(selectedDate);
   };
-
+  // console.log(userData);
   const handleSubmit = async () => {
     const gigDetails = {
       title,
@@ -65,7 +68,7 @@ function PostGig() {
       budget: payment,
       skills_req: skills,
       payment_option: paymentMethod,
-      _id: userData.data.user._id,
+      _id: userData._id,
     };
 
     console.log(gigDetails);
