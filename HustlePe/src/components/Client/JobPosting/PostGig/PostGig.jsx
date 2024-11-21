@@ -73,7 +73,7 @@ function PostGig() {
     console.log(gigDetails);
 
     try {
-      const response = await axios.post('http://localhost:2000/api/v1/client/postGig', gigDetails);
+      const response = await axios.post('http://localhost:2000/api/v1/client/postGig', gigDetails,{withCredentials: true});
       console.log(response.data);
       // Handle success (e.g., show a success message, redirect, etc.)
     } catch (error) {

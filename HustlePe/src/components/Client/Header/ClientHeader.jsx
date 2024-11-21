@@ -4,11 +4,22 @@ import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export default function ClientHeader() {
-  const userData = JSON.parse(Cookies.get('userdata') || '{}');
+  let userData = {};
+  const userDataCookie = Cookies.get('userData');
+
+  if (userDataCookie) {
+    try {
+      userData = JSON.parse(userDataCookie);
+    } catch (error) {
+      console.error("Failed to parse userData cookie:", error);
+    }
+  }
   const navigate = useNavigate();
   
   const handleLogout = () => {
     Cookies.remove('userData'); // Remove user data from cookies
+    Cookies.remove('accessToken'); // Remove access token from cookies
+    Cookies.remove('refreshToken'); // Remove refresh token from cookies
     navigate('/');
   };
 

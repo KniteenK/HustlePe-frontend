@@ -1,9 +1,9 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Cookies from 'js-cookie';
 import logo from '../../../assets/Images/Logo.png';
 const Login = () => {
   const navigate = useNavigate();
@@ -48,6 +48,8 @@ const Login = () => {
         // console.log('Response data:', JSON.stringify(response)); // Print the response data
         // console.log(response.data.data.userData)
         alert('Logged in successfully');
+        console.log("Logged in successfully");
+        console.log(response.data.data.accessToken);
         Cookies.set('userData', JSON.stringify(response.data.data.userData), { expires: 1 }); // Expires in 7 days
         Cookies.set('accessToken', JSON.stringify(response.data.data.accessToken))
         Cookies.set('refreshToken', JSON.stringify(response.data.data.refreshToken))

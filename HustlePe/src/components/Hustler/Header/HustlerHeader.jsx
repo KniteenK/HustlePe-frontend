@@ -9,6 +9,7 @@ export default function HustlerHeader() {
   if (userDataCookie) {
     try {
       userData = JSON.parse(userDataCookie);
+      // console.log(userData);
     } catch (error) {
       console.error("Failed to parse userData cookie:", error);
     }
@@ -16,11 +17,14 @@ export default function HustlerHeader() {
   // console.log('User Data:', userData);
   const navigate = useNavigate();
   const handleLogout = () => {
+    Cookies.remove('userData'); // Remove user data from cookies
+    Cookies.remove('accessToken'); // Remove access token from cookies
+    Cookies.remove('refreshToken'); // Remove refresh token from cookies
 
     navigate('/');
   };
   useEffect(() => {
-    // console.log('User Data:', userData);
+    console.log('User Data:', userData);
     // console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
     // console.log('Hustler Header');
   }, []);
@@ -30,7 +34,7 @@ export default function HustlerHeader() {
   const fullName = `${firstName} ${lastName}`;
   const avatar = userData.avatar || ''; 
   // console.log(name);
-  // console.log(username);
+  console.log(username);
   return (
     <header className="shadow sticky z-50 top-0">
       <Navbar>
