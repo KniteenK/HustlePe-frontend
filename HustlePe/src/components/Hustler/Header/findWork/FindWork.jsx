@@ -1,6 +1,6 @@
 import { Chip, Input } from "@nextui-org/react";
 import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SearchIcon } from "./SearchIcon.jsx"; // Adjust the import path as necessary
 
 const getGigs = async ({ skillsArray, sortBy = 'createdAt', order = -1, page = 1, limit = 10 }) => {
@@ -21,17 +21,30 @@ const getGigs = async ({ skillsArray, sortBy = 'createdAt', order = -1, page = 1
 };
 
 function FindWork() {
-  const [gigs, setGigs] = React.useState([]);
-  const [searchInput, setSearchInput] = React.useState("");
+  const [gigs, setGigs] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+
+  const fetchGigs = async () => {
+    try {
+      const fetchedGigs = await getGigs({ skillsArray: [searchInput.trim()] });
+      console.log('Fetched gigs:', fetchedGigs);  
+      setGigs(fetchedGigs);
+    } catch (error) {
+      console.error('Error fetching gigs:', error);
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchGigs();
+    }, 5000); // Fetch gigs every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [searchInput]);
 
   const handleKeyDown = async (event) => {
     if (event.key === 'Enter' && searchInput.trim() !== "") {
-      try {
-        const fetchedGigs = await getGigs({ skillsArray: [searchInput.trim()] });
-        setGigs(fetchedGigs);
-      } catch (error) {
-        console.error('Error fetching gigs:', error);
-      }
+      await fetchGigs();
       setSearchInput("");
     }
   };
