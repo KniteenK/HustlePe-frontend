@@ -68,7 +68,6 @@ function PostGig() {
       budget: payment,
       skills_req: skills,
       payment_option: paymentMethod,
-      _id: userData._id,
     };
 
     console.log(gigDetails);
