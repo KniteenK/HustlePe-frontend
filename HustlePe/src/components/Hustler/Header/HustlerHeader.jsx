@@ -13,16 +13,16 @@ export default function HustlerHeader() {
       console.error("Failed to parse userData cookie:", error);
     }
   }
-  console.log('User Data:', userData);
+  // console.log('User Data:', userData);
   const navigate = useNavigate();
   const handleLogout = () => {
 
     navigate('/');
   };
   useEffect(() => {
-    console.log('User Data:', userData);
-    console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
-    console.log('Hustler Header');
+    // console.log('User Data:', userData);
+    // console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
+    // console.log('Hustler Header');
   }, []);
   const username = userData.username || 'Hustler';
   const firstName = userData.first_name || 'Tony';
@@ -30,7 +30,7 @@ export default function HustlerHeader() {
   const fullName = `${firstName} ${lastName}`;
   const avatar = userData.avatar || ''; 
   // console.log(name);
-  console.log(username);
+  // console.log(username);
   return (
     <header className="shadow sticky z-50 top-0">
       <Navbar>
