@@ -14,6 +14,9 @@ import Gigs from './components/Hustler/Header/ProfileSetting/Gigs.jsx'
 import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo.jsx'
 // import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
 import PostGig from './components/Client/JobPosting/PostGig/PostGig.jsx'
+
+import KnowOrganisations from './components/Guest/knowClient/KnowOrganisations.jsx'
+import KnowHustler from './components/Guest/knowHustler/KnowHustler.jsx'
 import FindWork from './components/Hustler/Header/findWork/FindWork.jsx'
 import Organizations from './components/Hustler/Header/organizations/Organizations.jsx'
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics.jsx'
@@ -27,8 +30,14 @@ const router = createBrowserRouter([
     path: '/',
     element:<GuestLayout />,
     children: [
-      
-
+      {
+        path: 'knowHustler',
+        element: <KnowHustler />
+      },
+      {
+        path: 'knowOrganisations',
+        element: <KnowOrganisations />
+      }
     ]
   },
   {

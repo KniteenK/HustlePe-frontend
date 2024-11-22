@@ -21,10 +21,10 @@ function GuestHeader() {
   };
 
   return (
-    <header className="shadow sticky z-50 top-0">
+    <header className=" sticky z-50 top-0 mb-3">
       <Navbar>  
         
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarContent className="hidden sm:flex gap-4 mt-3" justify="center">
           {/* <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
@@ -104,22 +104,22 @@ function GuestHeader() {
             </DropdownMenu>
           </Dropdown> */}
           <NavbarItem>
-            <NavLink to="/KnowHustlers" className={({ isActive }) =>
-              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+            <NavLink to="/knowHustler" className={({ isActive }) =>
+              `border-b  lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
               Know about Hustlers
             </NavLink>
           </NavbarItem>
           
           <NavbarItem>
-            <NavLink to="/KnowHustlers" className={({ isActive }) =>
+            <NavLink to="/knowOrganisations" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
               Know about Organisations
             </NavLink>
           </NavbarItem>
         </NavbarContent>
-        <NavbarContent justify="end" className="items-center">
+        <NavbarContent justify="end " className="items-center mt-3">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
