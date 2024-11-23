@@ -5,7 +5,7 @@ import { SearchIcon } from "./SearchIcon.jsx"; // Adjust the import path as nece
 
 const getGigs = async ({ skillsArray, sortBy = 'createdAt', order = -1, page = 1, limit = 10 }) => {
   try {
-    const response = await axios.post('http://localhost:2000/api/v1/hustler/getGigs', {
+    const response = await axios.post('http://localhost:2000/api/v1/hustler/FindWork', {
       skillsArray,
       sortBy,
       order,

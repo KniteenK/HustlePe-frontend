@@ -24,9 +24,10 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ChevronLeft } from "lucide-react";
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 function PostGig() {
-  
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [skills, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState("");
@@ -70,15 +71,19 @@ function PostGig() {
       payment_option: paymentMethod,
     };
 
-    console.log(gigDetails);
+    // console.log(gigDetails);
 
     try {
       const response = await axios.post('http://localhost:2000/api/v1/client/postGig', gigDetails,{withCredentials: true});
-      console.log(response.data);
-      // Handle success (e.g., show a success message, redirect, etc.)
+      console.log(response.data.statusCode);
+      if (response.data.statusCode == 201) {
+        navigate('/client/JobPosting');
+      } else {
+        toast.error('Failed to create gig');
+      }
     } catch (error) {
+      console.log("Not reflecting");
       console.error(error);
-      // Handle error (e.g., show an error message)
     }
   };
 
@@ -251,9 +256,11 @@ function PostGig() {
               Discard
             </Button>
             <Button size="sm" onClick={handleSubmit}>Save Gig</Button>
+            
           </div>
         </div>
       </main>
+      <ToastContainer />
     </div>
   );
 }

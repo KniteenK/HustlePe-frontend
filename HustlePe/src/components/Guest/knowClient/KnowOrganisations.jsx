@@ -1,6 +1,6 @@
 import { Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { SearchIcon } from "../../Hustler/Header/findWork/SearchIcon"; // Adjust the import path as necessary
+import { SearchIcon } from "../../Hustler/Header/findWork/SearchIcon"; 1// Adjust the import path as necessary
 
 export default function KnowOrganisations() {
   const [searchInput, setSearchInput] = useState("");
@@ -8,9 +8,9 @@ export default function KnowOrganisations() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchGigs();
-    }, 5000); // Fetch gigs every 5 seconds
+    }, 5000); 
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    return () => clearInterval(intervalId); 
   }, [searchInput]);
 
   const fetchGigs = async () => {
