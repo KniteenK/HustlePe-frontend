@@ -9,7 +9,7 @@ const ProfileSettingLayout = () => {
     { title: "Exprience and Certifications", src: "Exprience and Certifications", path: "Exprience and Certifications", gap: false },
     { title: "Documents and Social Links", src: "documents-and-social-links", path: "documents-and-social-links", gap: false },
     { title: "Statistics", src: "statistics", path: "statistics", gap: false },
-    { title: "Logout", src: "logout", path: "logout", gap: false },
+
   ];
 
   return (
