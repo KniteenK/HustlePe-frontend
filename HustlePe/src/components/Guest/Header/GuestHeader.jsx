@@ -1,5 +1,4 @@
 import { Button, Input, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
-import React from "react";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from "../../../assets/Icons.jsx";
 function GuestHeader() {

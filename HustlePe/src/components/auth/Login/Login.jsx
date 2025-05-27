@@ -1,10 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import logo from '../../../assets/Images/Logo.png';
+import logo from '../../../../new Hustle/vite-project/src/assets/Images/Logo.png';
 
 const Login = () => {
   const navigate = useNavigate();

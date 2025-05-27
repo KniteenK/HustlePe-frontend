@@ -1,12 +1,12 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Select from 'react-select';
 
 
-import logo from '../../../assets/Images/Logo.png';
+import logo from '../../../../new Hustle/vite-project/src/assets/Images/Logo.png';
 
 const RegisterClient = () => {
   const [formData, setFormData] = useState({
