@@ -32,7 +32,7 @@ function DocumentsAndSocialLinks() {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
   };
 
@@ -44,7 +44,7 @@ function DocumentsAndSocialLinks() {
           <FormField
             control={form.control}
             name="govtIdProof"
-            render={({ field }) => (
+            render={({ field }: { field: any }) => (
               <FormItem>
                 <FormLabel>Government ID Proof</FormLabel>
                 <FormControl>
@@ -57,7 +57,7 @@ function DocumentsAndSocialLinks() {
           <FormField
             control={form.control}
             name="githubLink"
-            render={({ field }) => (
+            render={({ field }: { field: any }) => (
               <FormItem>
                 <FormLabel>GitHub Link</FormLabel>
                 <FormControl>
@@ -70,7 +70,7 @@ function DocumentsAndSocialLinks() {
           <FormField
             control={form.control}
             name="linkedinLink"
-            render={({ field }) => (
+            render={({ field }: { field: any }) => (
               <FormItem>
                 <FormLabel>LinkedIn Link</FormLabel>
                 <FormControl>
@@ -83,7 +83,7 @@ function DocumentsAndSocialLinks() {
           <FormField
             control={form.control}
             name="portfolioLink"
-            render={({ field }) => (
+            render={({ field }: { field: any }) => (
               <FormItem>
                 <FormLabel>Portfolio Link</FormLabel>
                 <FormControl>

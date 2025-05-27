@@ -62,7 +62,7 @@ function PersonalInfo() {
   // State for form inputs
   const [currentPassword, setCurrentPassword] = useState('');
 const [newPassword, setNewPassword] = useState('');
-const [newAvatar, setNewAvatar] = useState(null);
+const [newAvatar, setNewAvatar] = useState<File | null>(null);
 
 const handleAvatarChange = async () => {
   if (!newAvatar) {
@@ -84,11 +84,15 @@ const handleAvatarChange = async () => {
       toast.success('Avatar updated successfully');
     }
   } catch (error) {
-    toast.error('Error updating avatar: ' + (error.response?.data?.message || error.message));
+    if (axios.isAxiosError(error)) {
+      toast.error('Error updating avatar: ' + (error.response?.data?.message || error.message));
+    } else {
+      toast.error('Error updating avatar: ' + String(error));
+    }
   }
 };
 
-const handleChangePassword = async (e) => {
+const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   if (!currentPassword || !newPassword) {
     toast.error('Please fill both current password and new password');
@@ -106,7 +110,7 @@ const handleChangePassword = async (e) => {
       setCurrentPassword('');
       setNewPassword('');
     }
-  } catch (error) {
+  } catch (error: any) {
     if (error.response && error.response.status === 401) {
       toast.error('Invalid current password');
     } else if (error.response && error.response.status === 404) {
@@ -116,10 +120,10 @@ const handleChangePassword = async (e) => {
     }
   }
 };
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      education: education.length > 0 ? education : [{ institute: "", degree: "", year_of_graduation: "" }],
+      education: education.length > 0 ? education : [{ institute: "", degree: "", year_of_graduation: 1900 }],
     },
   });
 
@@ -128,13 +132,13 @@ const handleChangePassword = async (e) => {
     name: "education",
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post('http://localhost:2000/api/v1/hustler/updateEducation', data);
       if (response.status === 200) {
         toast.success('Education details updated successfully');
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.error('Error updating education details: ' + (error.response?.data?.message || error.message));
     }
   };
@@ -179,7 +183,11 @@ const handleChangePassword = async (e) => {
                 <Input
                   id="newAvatar"
                   type="file"
-                  onChange={(e) => setNewAvatar(e.target.files[0])}
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setNewAvatar(e.target.files[0]);
+                    }
+                  }}
                   className="col-span-3"
                 />
               </div>
@@ -209,7 +217,7 @@ const handleChangePassword = async (e) => {
       <div className="p-4 mt-4">
         <h2 className="text-lg font-bold mb-2">Education Information</h2>
         {education.length > 0 ? (
-          education.map((edu, index) => (
+          education.map((edu: { institute: string; degree: string; year_of_graduation: number; }, index: number) => (
             <div key={index} className="mb-4 p-4 border rounded-lg shadow-sm">
               <p><strong>Institution:</strong> {edu.institute || 'Institution'}</p>
               <p><strong>Degree:</strong> {edu.degree || 'Degree'}</p>
@@ -267,12 +275,12 @@ const handleChangePassword = async (e) => {
         <h2 className="text-lg font-bold mb-2">Update Education Information</h2>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {fields.map((field, index) => (
+            {fields.map((field: { id: string; institute: string; degree: string; year_of_graduation: number }, index: number) => (
               <div key={field.id} className="space-y-4 p-4 border rounded-lg shadow-sm">
                 <FormField
                   control={form.control}
                   name={`education.${index}.institute`}
-                  render={({ field }) => (
+                  render={({ field }: { field: any }) => (
                     <FormItem>
                       <FormLabel>Institute</FormLabel>
                       <FormControl>
@@ -285,7 +293,7 @@ const handleChangePassword = async (e) => {
                 <FormField
                   control={form.control}
                   name={`education.${index}.degree`}
-                  render={({ field }) => (
+                  render={({ field }: { field: any }) => (
                     <FormItem>
                       <FormLabel>Degree</FormLabel>
                       <FormControl>
@@ -298,7 +306,7 @@ const handleChangePassword = async (e) => {
                 <FormField
                   control={form.control}
                   name={`education.${index}.year_of_graduation`}
-                  render={({ field }) => (
+                  render={({ field }: { field: any }) => (
                     <FormItem>
                       <FormLabel>Year of Graduation</FormLabel>
                       <FormControl>

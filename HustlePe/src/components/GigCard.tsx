@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { FaThumbsDown, FaHeart } from 'react-icons/fa';
 
-const Card = ({ data }) => {
+interface CardData {
+  avatar: string;
+  name: string;
+  posts: number;
+  bio: string;
+  joinDate: string;
+}
+
+interface CardProps {
+  data: CardData;
+}
+
+const Card: React.FC<CardProps> = ({ data }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   return (

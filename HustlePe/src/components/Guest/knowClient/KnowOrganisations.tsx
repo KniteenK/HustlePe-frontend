@@ -1,16 +1,16 @@
 import { Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { SearchIcon } from "../../Hustler/Header/findWork/SearchIcon"; // Adjust the import path as necessary
+import { SearchIcon } from "../../Hustler/Header/findWork/SearchIcon"; 1// Adjust the import path as necessary
 
-export default function KnowHustler() {
+export default function KnowOrganisations() {
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchGigs();
-    }, 5000); // Fetch gigs every 5 seconds
+    }, 5000); 
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    return () => clearInterval(intervalId); 
   }, [searchInput]);
 
   const fetchGigs = async () => {
@@ -18,7 +18,7 @@ export default function KnowHustler() {
     console.log("Fetching gigs with search input:", searchInput);
   };
 
-  const handleKeyDown = async (event) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchInput.trim() !== "") {
       await fetchGigs();
       setSearchInput("");
@@ -30,8 +30,8 @@ export default function KnowHustler() {
       {/* Header Section */}
       <header className="py-12">
         <h1 className="text-6xl font-bold ml-[12%] mt-[10%]">
-          Find the perfect freelance<br />
-          Job for your Profile
+          Find perfect organisations<br />
+          you are looking for
         </h1>
       </header>
       <div className="mt-[2%] ml-[12%]">
@@ -53,42 +53,51 @@ export default function KnowHustler() {
       </div>
       {/* Main Content */}
       <main className="container px-6 py-12">
-        {/* About Us Section */}
+        {/* Proposed Solution Section */}
         <section className="mb-16">
           <h2 className="text-6xl mt-[10%] ml-[12%]">
-            About Us
+            Proposed Solution
           </h2>
           <div className="mt-6 ml-[12%]">
             <p className="text-lg">
-              Hustler is a platform designed to bridge the gap between freelancers and clients. Whether you're a freelancer looking for your next gig or a client in need of skilled professionals, Hustler is here to help you connect and collaborate seamlessly.
+              By focusing on India’s freelance market, we provide tools and opportunities to help freelancers compete globally.
             </p>
           </div>
         </section>
 
-        {/* Our Mission Section */}
+        {/* Organisations Feature Section */}
         <section className="mb-16">
           <h2 className="text-6xl mt-[10%] ml-[12%]">
-            Our Mission
+            Organisations Feature
           </h2>
           <div className="mt-6 ml-[12%]">
             <p className="text-lg">
-              Our mission is to create a thriving community where freelancers can showcase their skills and clients can find the perfect match for their projects. We believe in the power of collaboration and aim to provide a platform that fosters growth and success for everyone involved.
+              High-rated freelancers can create teams and invite others, forming small business units. New freelancers gain experience by collaborating within these teams, benefitting from mentorship and bypassing early challenges.
             </p>
           </div>
         </section>
 
-        {/* Why Choose Hustler Section */}
+        {/* AI-Enabled Insights Section */}
         <section className="mb-16">
           <h2 className="text-6xl mt-[10%] ml-[12%]">
-            Why Choose Hustler?
+            AI-Enabled Insights
           </h2>
           <div className="mt-6 ml-[12%]">
-            <ul className="list-disc text-lg">
-              <li>Wide range of skilled freelancers</li>
-              <li>Easy-to-use platform</li>
-              <li>Secure payment options</li>
-              <li>24/7 customer support</li>
-            </ul>
+            <p className="text-lg">
+              Advanced search and analytics capabilities, powered by AI, allow for personalized recommendations and data-driven decision-making for both freelancers and employers.
+            </p>
+          </div>
+        </section>
+
+        {/* Multiple Payment Methods Section */}
+        <section className="mb-16">
+          <h2 className="text-6xl mt-[10%] ml-[12%]">
+            Multiple Payment Methods
+          </h2>
+          <div className="mt-6 ml-[12%]">
+            <p className="text-lg">
+              Secure payment options including escrow accounts and milestone payments ensure transparent and fair financial transactions.
+            </p>
           </div>
         </section>
       </main>

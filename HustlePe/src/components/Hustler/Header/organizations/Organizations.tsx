@@ -10,7 +10,7 @@ const mockOrganizations = [
   { _id: 5, name: "Health Innovators", description: "Innovative healthcare solutions for modern medical challenges.", location: "Los Angeles, CA" },
 ];
 
-const getOrganizations = async ({ searchQuery }) => {
+const getOrganizations = async ({ searchQuery }: { searchQuery: string }) => {
   try {
     // Mock filtering logic
     if (searchQuery.toLowerCase().includes("tech")) {
@@ -24,7 +24,7 @@ const getOrganizations = async ({ searchQuery }) => {
 };
 
 function Organizations() {
-  const [organizations, setOrganizations] = useState([]);
+  const [organizations, setOrganizations] = useState<{ _id: number; name: string; description: string; location: string }[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
   const fetchOrganizations = async () => {
@@ -47,7 +47,7 @@ function Organizations() {
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [searchInput]);
 
-  const handleKeyDown = async (event) => {
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && searchInput.trim() !== "") {
       await fetchOrganizations();
       setSearchInput("");
@@ -83,7 +83,7 @@ function Organizations() {
               <h2 className="text-xl font-bold">{org.name}</h2>
               <p>{org.description}</p>
               <p className="font-semibold">{org.location}</p>
-              <Button className="mt-2" auto>Contact</Button>
+              <Button className="mt-2">Contact</Button>
             </div>
           ))}
         </div>

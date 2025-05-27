@@ -9,12 +9,22 @@ import {
 import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { SearchIcon } from "./SearchIcon.jsx"; // Adjust the import path as necessary
+import { SearchIcon } from "./SearchIcon"; // Adjust the import path as necessary
+
+interface Gig {
+  _id: string;
+  title: string;
+  description: string;
+  status: string;
+  skills_req: string[];
+  budget: number;
+  payment_option: string;
+}
 
 function FindWork() {
-  const [gigs, setGigs] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [skillsArray, setSkillsArray] = useState([]);
+  const [gigs, setGigs] = useState<Gig[]>([]);
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [skillsArray, setSkillsArray] = useState<string[]>([]);
 
   const fetchGigs = async () => {
     try {
@@ -25,7 +35,7 @@ function FindWork() {
         page: 1,
         limit: 10,
       });
-      const fetchedGigs = response.data.data; // Access the 'data' property of the response object
+      const fetchedGigs: Gig[] = response.data.data; // Access the 'data' property of the response object
       console.log(fetchedGigs);
       setGigs(fetchedGigs);
     } catch (error) {
@@ -37,7 +47,7 @@ function FindWork() {
     fetchGigs();
   }, [skillsArray]); // Re-fetch gigs whenever skillsArray changes
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && searchInput.trim() !== "") {
       if (!skillsArray.includes(searchInput.trim())) {
         setSkillsArray([...skillsArray, searchInput.trim()]);
@@ -46,7 +56,7 @@ function FindWork() {
     }
   };
 
-  const removeSkill = (skillToRemove) => {
+  const removeSkill = (skillToRemove: string) => {
     setSkillsArray(skillsArray.filter(skill => skill !== skillToRemove));
   };
 
@@ -120,7 +130,7 @@ function FindWork() {
                   <TableCell>{gig.budget}</TableCell>
                   <TableCell>{gig.payment_option}</TableCell>
                   <TableCell>
-                    <Button auto className="mt-2">Apply</Button>
+                    <Button className="mt-2">Apply</Button>
                   </TableCell>
                 </TableRow>
               ))}

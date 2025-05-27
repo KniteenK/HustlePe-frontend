@@ -25,8 +25,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
   const onSubmit = async () =>{
     if (email === '' || password === '') {
       toast.error('Please fill all the fields', {
@@ -68,7 +68,7 @@ const Login = () => {
       
     } catch (error) {
       console.error('An error occurred:', error); // Log the error for debugging
-      const errorMessage = error.response?.data?.message || 'An error occurred. Please try again.';
+      const errorMessage = (error as any).response?.data?.message || 'An error occurred. Please try again.';
       console.log(errorMessage);
       toast.error(errorMessage);
     }

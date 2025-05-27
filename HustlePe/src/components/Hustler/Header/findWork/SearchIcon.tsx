@@ -4,7 +4,12 @@ export const SearchIcon = ({
     width,
     height,
     ...props
-  }) => (
+  }: {
+    size?: number;
+    strokeWidth?: number;
+    width?: number;
+    height?: number;
+  } & React.SVGProps<SVGSVGElement>) => (
     <svg
       aria-hidden="true"
       fill="none"

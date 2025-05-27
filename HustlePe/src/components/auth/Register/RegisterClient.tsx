@@ -1,15 +1,35 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Select from 'react-select';
+import Select, { type SingleValue } from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import logo from '../../../assets/Images/Logo.png';
 
-import logo from '../../../../new Hustle/vite-project/src/assets/Images/Logo.png';
+// Types for country and city options
+type CountryOption = {
+  label: string;
+  value: string;
+  flag: string;
+};
+type CityOption = {
+  label: string;
+  value: string;
+};
+
+type FormData = {
+  username: string;
+  email: string;
+  password: string;
+  contactNumber: string;
+  city: string;
+  country: string;
+  organisationName: string;
+};
 
 const RegisterClient = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username: '',
     email: '',
     password: '',
@@ -18,17 +38,17 @@ const RegisterClient = () => {
     country: '',
     organisationName: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [countries, setCountries] = useState<CountryOption[]>([]);
+  const [cities, setCities] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch countries with flag URLs
     fetch('https://restcountries.com/v3.1/all')
       .then(response => response.json())
-      .then(data => {
-        const countryList = data.map(country => ({
+      .then((data: any[]) => {
+        const countryList: CountryOption[] = data.map(country => ({
           label: country.name.common,
           value: country.name.common,
           flag: country.flags.png // Added flag URL
@@ -45,7 +65,7 @@ const RegisterClient = () => {
       // Fetch cities based on selected country
       axios.post('https://countriesnow.space/api/v0.1/countries/cities', { country: formData.country })
         .then(response => {
-          const cityList = response.data.data.sort();
+          const cityList: string[] = response.data.data.sort();
           setCities(cityList);
         })
         .catch(error => {
@@ -54,16 +74,27 @@ const RegisterClient = () => {
     }
   }, [formData.country]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  // For react-select country
+  const handleCountrySelect = (option: SingleValue<CountryOption>) => {
+    setFormData({ ...formData, country: option ? option.value : '', city: '' });
+    setCities([]);
+  };
+
+  // For react-select city
+  const handleCitySelect = (option: SingleValue<CityOption>) => {
+    setFormData({ ...formData, city: option ? option.value : '' });
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { username, email, password, contactNumber, city, country, organisationName } = formData;
 
@@ -166,9 +197,9 @@ const RegisterClient = () => {
                     options={countries}
                     placeholder="Select country"
                     classNamePrefix="react-select"
-                    value={countries.find(c => c.value === formData.country)}
-                    onChange={option => handleChange({ target: { name: 'country', value: option.value } })}
-                    formatOptionLabel={country => (
+                    value={countries.find(c => c.value === formData.country) || null}
+                    onChange={handleCountrySelect}
+                    formatOptionLabel={(country: CountryOption) => (
                       <div className="flex items-center">
                         <img src={country.flag} alt={country.label} style={{ width: '20px', marginRight: '10px' }} />
                         {country.label}
@@ -183,9 +214,9 @@ const RegisterClient = () => {
                     options={cities.map(city => ({ label: city, value: city }))}
                     placeholder="Select city"
                     classNamePrefix="react-select"
-                    value={cities.find(c => c.value === formData.city)}
-                    onChange={option => handleChange({ target: { name: 'city', value: option.value } })}
-                    isDisabled={!formData.country} // Disable city dropdown until country is selected
+                    value={formData.city ? { label: formData.city, value: formData.city } : null}
+                    onChange={handleCitySelect}
+                    isDisabled={!formData.country}
                     className="w-full text-sm text-gray-800 border border-gray-300 rounded-lg"
                   />
                 </div>

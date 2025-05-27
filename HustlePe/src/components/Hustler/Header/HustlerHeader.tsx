@@ -2,53 +2,62 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Navbar, NavbarCo
 import Cookies from 'js-cookie';
 import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
-export default function ClientHeader() {
-  let userData = {};
+export default function HustlerHeader() {
+  let userData: any = {};
   const userDataCookie = Cookies.get('userData');
 
   if (userDataCookie) {
     try {
       userData = JSON.parse(userDataCookie);
+      // console.log(userData);
     } catch (error) {
       console.error("Failed to parse userData cookie:", error);
     }
   }
+  // console.log('User Data:', userData);
   const navigate = useNavigate();
-  
   const handleLogout = () => {
     Cookies.remove('userData'); // Remove user data from cookies
     Cookies.remove('accessToken'); // Remove access token from cookies
     Cookies.remove('refreshToken'); // Remove refresh token from cookies
+
     navigate('/');
   };
-
   useEffect(() => {
     console.log('User Data:', userData);
-    console.log('Client Header');
-    console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
-  }, [userData]);
-
-  const username = userData.username || 'Client name';
-  const organisation = userData.organisation || 'Organisation name';
-  const avatar = userData.avatar || 'https://i.pravatar.cc/150?u=a042581f4e29026024d';
-
+    // console.log('Response data:', JSON.stringify(userData, null, 2)); // Print the response data
+    // console.log('Hustler Header');
+  }, []);
+  const username = userData.username || 'Hustler';
+  const firstName = userData.first_name || 'Tony';
+  const lastName = userData.last_name || 'Reichert';
+  const fullName = `${firstName} ${lastName}`;
+  const avatar = userData.avatar || ''; 
+  // console.log(name);
+  console.log(username);
   return (
     <header className="shadow sticky z-50 top-0">
       <Navbar>
         <NavbarContent>
           <NavbarItem>
-            <NavLink to="/client/JobPosting" className={({ isActive }) =>
+            <NavLink to="/hustler/FindWork" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Job Posting
+              Find Work
             </NavLink>
           </NavbarItem>
           <NavbarItem>
-            <NavLink to="/client/Messages" className={({ isActive }) =>
+            <NavLink to="/hustler/Organizations" className={({ isActive }) =>
               `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
             }>
-              Messages
+              Organizations
+            </NavLink>
+          </NavbarItem>
+          <NavbarItem>
+            <NavLink to="/hustler/Resources" className={({ isActive }) =>
+              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+            }>
+              Resources
             </NavLink>
           </NavbarItem>
         </NavbarContent>
@@ -62,8 +71,8 @@ export default function ClientHeader() {
                   src: avatar,
                 }}
                 className="transition-transform"
-                description={`@${organisation}`}
-                name={username}
+                description={`@${username}`}
+                name={fullName}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">
@@ -71,12 +80,16 @@ export default function ClientHeader() {
                 <p className="font-bold">Signed in as</p>
                 <p className="font-bold">@{username}</p>
               </DropdownItem>
-              <DropdownItem key="settings" as={NavLink} to="/client/ProfileSettings/profile">
-                My Settings
+              <DropdownItem key="settings">
+                <NavLink to="/hustler/ProfileSettings/profile">
+                  My Settings
+                </NavLink>
               </DropdownItem>
+              
               <DropdownItem key="analytics">
                 Analytics
               </DropdownItem>
+              
               <DropdownItem key="configurations">Configurations</DropdownItem>
               <DropdownItem key="help_and_feedback">
                 Help & Feedback

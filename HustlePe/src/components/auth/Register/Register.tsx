@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FlagIcon } from 'react-flag-kit';
+import type { FlagIconCode } from 'react-flag-kit';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import logo from '../../../../new Hustle/vite-project/src/assets/Images/Logo.png';
+import logo from '../../../assets/Images/Logo.png';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -75,13 +76,13 @@ const Signup = () => {
   const [lastName, setLastName] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
-  const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState<{ value: string, label: string }[]>([]);
   const [cities, setCities] = useState([]);
 
   // Function to format the country options with flags
-const formatCountryOption = ({ value, label }) => (
+const formatCountryOption = ({ value, label }: { value: string; label: string }) => (
   <div className="flex items-center">
-    <FlagIcon code={value} size={24} className="mr-2" />
+    <FlagIcon code={value as FlagIconCode} size={24} className="mr-2" />
     <span>{label}</span>
   </div>
 );
@@ -91,12 +92,12 @@ const formatCountryOption = ({ value, label }) => (
     fetch('https://restcountries.com/v3.1/all')
       .then(response => response.json())
       .then(data => {
-        const countryList = data.map(country => ({
-          value: country.cca2, // ISO country code
-          label: country.name.common,
-        })).sort((a, b) => a.label.localeCompare(b.label));
-        setCountries(countryList);
-      });
+                const countryList = data.map((country: any) => ({
+                  value: country.cca2, // ISO country code
+                  label: country.name.common,
+                })).sort((a: { value: string; label: string }, b: { value: string; label: string }) => a.label.localeCompare(b.label));
+                setCountries(countryList);
+            });
   }, []);
   
 
@@ -118,14 +119,14 @@ const formatCountryOption = ({ value, label }) => (
     }
   }, [country]);
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  const handleContactNumberChange = (e) => setContactNumber(e.target.value);
-  const handleFirstNameChange = (e) => setFirstName(e.target.value);
-  const handleLastNameChange = (e) => setLastName(e.target.value);
-  const handleCityChange = (e) => setCity(e.target.value);
-  const handleCountryChange = (e) => setCountry(e.target.value);
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
+  const handleContactNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => setContactNumber(e.target.value);
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value);
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value);
+  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => setCity(e.target.value);
+  const handleCountryChange = (e: React.ChangeEvent<HTMLInputElement>) => setCountry(e.target.value);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -165,7 +166,7 @@ const formatCountryOption = ({ value, label }) => (
                 </div>
                 <Select
                   value={country ? countries.find(c => c.label === country) : null}
-                  onChange={(option) => setCountry(option.label)}
+                  onChange={(option) => setCountry(option ? option.label : '')}
                   options={countries}
                   formatOptionLabel={formatCountryOption}
                   placeholder="Select country"
@@ -181,7 +182,7 @@ const formatCountryOption = ({ value, label }) => (
                 />
                 <Select
                   value={city ? { value: city, label: city } : null}
-                  onChange={(option) => setCity(option.label)}
+                  onChange={(option) => option ? setCity(option.label) : setCity('')}
                   options={cities.map(city => ({ value: city, label: city }))}
                   placeholder="Select city"
                   className="text-sm"

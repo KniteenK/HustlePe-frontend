@@ -23,13 +23,13 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ChevronLeft } from "lucide-react";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 function PostGig() {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState<string[]>([]);
   const [skillInput, setSkillInput] = useState("");
   const [showCalendar, setShowCalendar] = useState(true);
   const [title, setTitle] = useState("");
@@ -56,8 +56,8 @@ function PostGig() {
     setShowCalendar(!showCalendar);
   };
 
-  const handleDateSelect = (selectedDate) => {
-    setDate(selectedDate);
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate ?? new Date());
     // console.log(selectedDate);
   };
   // console.log(userData);

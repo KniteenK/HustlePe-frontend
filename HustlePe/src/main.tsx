@@ -1,30 +1,31 @@
 import React from 'react';
+
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import ClientLayout from './ClientLayout.js';
-import Intermediate from './components/auth/Intermediate.js';
-import Login from './components/auth/Login/Login.js';
-import Register from './components/auth/Register/Register.js';
-import RegisterClient from './components/auth/Register/RegisterClient.js';
-import JobPosting from './components/Client/JobPosting/JobPosting.js';
-import Messages from './components/Client/Messages/Messages.js';
-import DocumentsAndSocialLinks from './components/Hustler/Header/ProfileSetting/DocumentsAndSocialLinks.js';
-import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti.js';
-import Gigs from './components/Hustler/Header/ProfileSetting/Gigs.js';
-import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo.js';
+import ClientLayout from './layouts/ClientLayout';
+import Intermediate from './components/auth/Intermediate';
+import Login from './components/auth/Login/Login';
+import Register from './components/auth/Register/Register';
+import RegisterClient from './components/auth/Register/RegisterClient';
+import JobPosting from './components/Client/JobPosting/JobPosting';
+import Messages from './components/Client/Messages/Messages';
+import DocumentsAndSocialLinks from './components/Hustler/Header/ProfileSetting/DocumentsAndSocialLinks';
+import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti';
+import Gigs from './components/Hustler/Header/ProfileSetting/Gigs';
+import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo';
 // import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
-import PostGig from './components/Client/JobPosting/PostGig/PostGig.js';
+import PostGig from './components/Client/JobPosting/PostGig/PostGig';
 
-import KnowOrganisations from './components/Guest/knowClient/KnowOrganisations.js';
-import KnowHustler from './components/Guest/knowHustler/KnowHustler.js';
-import FindWork from './components/Hustler/Header/findWork/FindWork.js';
-import Organizations from './components/Hustler/Header/organizations/Organizations.js';
-import Statistics from './components/Hustler/Header/ProfileSetting/Statistics.js';
-import Resources from './components/Hustler/Header/resources/Resources.js';
-import GuestLayout from './GuestLayout.js';
-import HustlerLayout from './HustlerLayout.js';
-import './index.css';
-import ProfileSettingLayout from './ProfileSettingLayout.js';
+import KnowOrganisations from './components/Guest/knowClient/KnowOrganisations';
+import KnowHustler from './components/Guest/knowHustler/KnowHustler';
+import FindWork from './components/Hustler/Header/findWork/FindWork';
+import Organizations from './components/Hustler/Header/organizations/Organizations';
+import Statistics from './components/Hustler/Header/ProfileSetting/Statistics';
+import Resources from './components/Hustler/Header/resources/resources.js';
+import GuestLayout from './layouts/GuestLayout.js';
+import HustlerLayout from './layouts/HustlerLayout.js';
+import './index.css'
+import ProfileSettingLayout from './layouts/ProfileSettingLayout.js';
 const router = createBrowserRouter([
   {
     path: '/',

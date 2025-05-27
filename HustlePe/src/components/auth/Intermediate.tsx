@@ -2,13 +2,13 @@ import { Image } from '@nextui-org/react';
 import React, { useState } from 'react';
 
 function Intermediate() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
-  const handleImageClick = (imageIndex) => {
+  const handleImageClick = (imageIndex: number) => {
     setSelectedImage(imageIndex);
   };
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!selectedImage) {
       e.preventDefault();
     }
