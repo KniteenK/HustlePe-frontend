@@ -2,35 +2,30 @@ import { Button, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { SearchIcon } from "../findWork/SearchIcon"; // Adjust the import path as necessary
 
-const mockOrganizations = [
-  { _id: 1, name: "Tech Corp", description: "A leading tech company specializing in software development.", location: "San Francisco, CA" },
-  { _id: 2, name: "Design Studio", description: "A creative design agency offering web and graphic design services.", location: "New York, NY" },
-  { _id: 3, name: "Marketing Experts", description: "A marketing firm helping businesses grow their online presence.", location: "Chicago, IL" },
-  { _id: 4, name: "Finance Solutions", description: "Providing financial consulting and investment services.", location: "Boston, MA" },
-  { _id: 5, name: "Health Innovators", description: "Innovative healthcare solutions for modern medical challenges.", location: "Los Angeles, CA" },
-];
-
-const getOrganizations = async ({ searchQuery }: { searchQuery: string }) => {
+const getOrganizations = async () => {
   try {
-    // Mock filtering logic
-    if (searchQuery.toLowerCase().includes("tech")) {
-      return mockOrganizations.filter(org => org.name.toLowerCase().includes("tech"));
+    console.log('Fetching organizations...');
+    const response = await fetch("http://localhost:2000/api/v1/organization/all");
+    if (!response.ok) {
+      throw new Error("Failed to fetch organizations");
     }
-    return mockOrganizations;
+    const data = await response.json();
+    console.log('Organizations fetched:', data);
+    // The organizations are in data.data (array)
+    return Array.isArray(data.data) ? data.data : [];
   } catch (error) {
     console.error('Error fetching organizations:', error);
-    throw new Error('Error fetching organizations by search query');
+    throw new Error('Error fetching organizations');
   }
 };
 
 function Organizations() {
-  const [organizations, setOrganizations] = useState<{ _id: number; name: string; description: string; location: string }[]>([]);
+  const [organizations, setOrganizations] = useState<any[]>([]);
   const [searchInput, setSearchInput] = useState("");
 
   const fetchOrganizations = async () => {
     try {
-      const fetchedOrganizations = await getOrganizations({ searchQuery: searchInput.trim() });
-      console.log('Fetched organizations:', fetchedOrganizations);  
+      const fetchedOrganizations = await getOrganizations();
       setOrganizations(fetchedOrganizations);
     } catch (error) {
       console.error('Error fetching organizations:', error);
@@ -38,19 +33,24 @@ function Organizations() {
   };
 
   useEffect(() => {
-    fetchOrganizations(); // Fetch organizations on component mount
+    fetchOrganizations();
 
     const intervalId = setInterval(() => {
       fetchOrganizations();
-    }, 5000); // Fetch organizations every 5 seconds
+    }, 5000);
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [searchInput]);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Ensure organizations is always an array
+  const orgArray = Array.isArray(organizations) ? organizations : [];
+  const filteredOrganizations = orgArray.filter(org =>
+    org.name?.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && searchInput.trim() !== "") {
-      await fetchOrganizations();
-      setSearchInput("");
+    if (event.key === 'Enter') {
+      // No need to fetch again, just filter client-side
     }
   };
 
@@ -78,7 +78,7 @@ function Organizations() {
           />
         </div>
         <div className="flex flex-col gap-4 mt-4">
-          {organizations.map((org) => (
+          {filteredOrganizations.map((org) => (
             <div key={org._id} className="p-4 bg-white rounded shadow-md text-black">
               <h2 className="text-xl font-bold">{org.name}</h2>
               <p>{org.description}</p>
