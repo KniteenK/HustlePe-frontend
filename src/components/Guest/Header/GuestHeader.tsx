@@ -1,28 +1,19 @@
 import { Button, Input, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Activity, ChevronDown, Flash, Lock, Scale, Server, TagUser } from "../../../assets/Icons.jsx";
+import { NavLink, useNavigate } from "react-router-dom";
 function GuestHeader() {
   const navigate = useNavigate();
-  const icons = {
-    chevron: <ChevronDown fill="currentColor" size={16} />,
-    scale: <Scale className="text-warning" fill="currentColor" size={30} />,
-    lock: <Lock className="text-success" fill="currentColor" size={30} />,
-    activity: <Activity className="text-secondary" fill="currentColor" size={30} />,
-    flash: <Flash className="text-primary" fill="currentColor" size={30} />,
-    server: <Server className="text-success" fill="currentColor" size={30} />,
-    user: <TagUser className="text-danger" fill="currentColor" size={30} />,
-  };
+
   const handleLoginClick = () => {
-    navigate('/login'); // Redirect to the login page
+    navigate("/login"); // Redirect to the login page
   };
+
   const handleSignupClick = () => {
-    navigate('/Intermediate'); // Redirect to the register page
+    navigate("/Intermediate"); // Redirect to the register page
   };
 
   return (
-    <header className=" sticky z-50 top-0 mb-3">
-      <Navbar>  
-        
+    <header className="z-50 pb-3 bg-white">
+      <Navbar>
         <NavbarContent className="hidden sm:flex gap-4 mt-3" justify="center">
           {/* <Dropdown>
             <NavbarItem>
@@ -103,22 +94,30 @@ function GuestHeader() {
             </DropdownMenu>
           </Dropdown> */}
           <NavbarItem>
-            <NavLink to="/knowHustler" className={({ isActive }) =>
-              `border-b  lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
-            }>
+            <NavLink
+              to="/knowHustler"
+              className={({ isActive }) =>
+                `border-b  lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+              }
+            >
               Know about Hustlers
             </NavLink>
           </NavbarItem>
-          
+
           <NavbarItem>
-            <NavLink to="/knowOrganisations" className={({ isActive }) =>
-              `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
-            }>
+            <NavLink
+              to="/knowOrganisations"
+              className={({ isActive }) =>
+                `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${
+                  isActive ? "text-orange-700" : "text-gray-700"
+                }`
+              }
+            >
               Know about Organisations
             </NavLink>
           </NavbarItem>
         </NavbarContent>
-        <NavbarContent justify="end " className="items-center mt-3">
+        <NavbarContent justify="end" className="items-center mt-3">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[10rem] h-10",
@@ -132,14 +131,10 @@ function GuestHeader() {
             type="search"
           />
           <NavbarItem className="hidden lg:flex">
-          <Button onClick={handleLoginClick}>
-              Login
-            </Button>
+            <Button onClick={handleLoginClick}>Login</Button>
           </NavbarItem>
           <NavbarItem>
-          <Button onClick={handleSignupClick}>
-              SignUp
-            </Button>
+            <Button onClick={handleSignupClick}>SignUp</Button>
           </NavbarItem>
         </NavbarContent>
       </Navbar>
