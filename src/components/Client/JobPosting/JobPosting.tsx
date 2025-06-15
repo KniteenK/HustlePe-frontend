@@ -1,30 +1,54 @@
 import { Card, CardBody, CardFooter, CardHeader, Divider, Link } from "@nextui-org/react";
-import React from 'react';
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
-const projects = [
-  {
-    title: "Project 1",
-    description: "Description for project 1",
-    budget: "$1000",
-    location: "New York",
-    link: "https://example.com/project1"
-  },
-  {
-    title: "Project 2",
-    description: "Description for project 2",
-    budget: "$2000",
-    location: "San Francisco",
-    link: "https://example.com/project2"
-  },
-  // Add more projects as needed
-];
 function JobPosting() {
   const navigate = useNavigate();
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Get client id and token from cookie
+    let clientId = "";
+    let accessToken = "";
+    const userDataCookie = Cookies.get('userData');
+    const accessTokenCookie = Cookies.get('accessToken');
+    if (userDataCookie) {
+      try {
+        const userData = JSON.parse(userDataCookie);
+        clientId = userData._id || "";
+      } catch (error) {
+        console.error("Failed to parse userData cookie:", error);
+      }
+    }
+    if (accessTokenCookie) {
+      accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+    }
+
+    // Fetch gigs posted by this client using Authorization header
+    const fetchGigs = async () => {
+      try {
+        const res = await axios.get(`http://localhost:2000/api/v1/client/myGigs?clientId=${clientId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        });
+        const data = res.data;
+        setProjects(Array.isArray(data.data) ? data.data : []);
+      } catch (err) {
+        console.error("Failed to fetch gigs", err);
+        setProjects([]);
+      }
+    };
+    if (clientId && accessToken) fetchGigs();
+  }, []);
 
   const handlePostGig = () => {
     navigate("/client/PostGig");
-  }
+  };
+
   return (
     <div className="flex flex-col h-full p-6 md:ml-11">
       <div className="text-left mb-6 w-full mt-10">
@@ -43,7 +67,7 @@ function JobPosting() {
           <Card key={index} className="max-w-[400px]">
             <CardHeader className="flex justify-center">
               <div className="flex flex-col items-center">
-                <p className="text-md font-bold text-center">{project.title}</p>
+                <p className="text-md font-bold text-center">{project.title || project.name}</p>
               </div>
             </CardHeader>
             <Divider />
@@ -54,9 +78,11 @@ function JobPosting() {
             </CardBody>
             <Divider />
             <CardFooter>
-              <Link isExternal showAnchorIcon href={project.link}>
-                View Project
-              </Link>
+              {project.link && (
+                <Link isExternal showAnchorIcon href={project.link}>
+                  View Project
+                </Link>
+              )}
             </CardFooter>
           </Card>
         ))}

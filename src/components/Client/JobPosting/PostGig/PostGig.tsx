@@ -71,10 +71,25 @@ function PostGig() {
       payment_option: paymentMethod,
     };
 
-    // console.log(gigDetails);
+    // Get access token from cookie for authentication
+    let accessToken = "";
+    const accessTokenCookie = Cookies.get('accessToken');
+    if (accessTokenCookie) {
+      accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+    }
 
     try {
-      const response = await axios.post('http://localhost:2000/api/v1/client/postGig', gigDetails,{withCredentials: true});
+      const response = await axios.post(
+        'http://localhost:2000/api/v1/client/postGig',
+        gigDetails,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
       console.log(response.data.statusCode);
       if (response.data.statusCode == 201) {
         navigate('/client/JobPosting');
