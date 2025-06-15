@@ -1,7 +1,6 @@
+import Cookies from "js-cookie";
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
-
-// Remove mock clients data
 
 const SOCKET_URL = "http://localhost:2000";
 
@@ -12,30 +11,56 @@ export default function Messages() {
 	const [message, setMessage] = useState("");
 	const socketRef = useRef<Socket | null>(null);
 
-	// Replace with actual hustlerId from auth/user context
-	const hustlerId = "hustler_id_123"; // TODO: Replace with real hustler id
+	// Get hustlerId from userData cookie
+	let hustlerId = "";
+	const userDataCookie = Cookies.get('userData');
+	if (userDataCookie) {
+		try {
+			const userData = JSON.parse(userDataCookie);
+			hustlerId = userData._id || "";
+		} catch (error) {
+			console.error("Failed to parse userData cookie:", error);
+		}
+	}
 
-	// Fetch clients dynamically
+
+	// Fetch chat history via REST endpoint when a client is selected
 	useEffect(() => {
-		const fetchClients = async () => {
-			try {
-				const res = await fetch("http://localhost:2000/api/v1/client/all");
-				const data = await res.json();
-				// Adjust according to your API response structure
-				setClients(Array.isArray(data.data) ? data.data : []);
-			} catch (err) {
-				console.error("Failed to fetch clients", err);
+		const fetchChatHistory = async () => {
+			if (selectedClient && hustlerId) {
+				const clientId = selectedClient._id || selectedClient.id?.toString();
+				try {
+					const res = await fetch(
+						`http://localhost:2000/api/v1/chat/history?hustlerId=${hustlerId}&clientId=${clientId}`
+					);
+					const data = await res.json();
+					setChatHistory(Array.isArray(data.history) ? data.history : []);
+				} catch (err) {
+					console.error("Failed to fetch chat history", err);
+					setChatHistory([]);
+				}
+			} else {
+				setChatHistory([]);
 			}
 		};
-		fetchClients();
-	}, []);
+		fetchChatHistory();
+	}, [selectedClient, hustlerId]);
 
 	useEffect(() => {
-		const socket = io(SOCKET_URL, { transports: ["websocket"] });
+		// Only connect socket if the backend server is running and socket.io is enabled
+		const socket = io(SOCKET_URL, {
+			transports: ["websocket", "polling"], // fallback to polling if websocket fails
+			reconnectionAttempts: 3, // try to reconnect a few times
+			reconnectionDelay: 1000,
+		});
 		socketRef.current = socket;
 
 		socket.on("connect", () => {
 			console.log("Socket connected:", socket.id);
+		});
+
+		socket.on("connect_error", (err) => {
+			console.error("Socket connection error:", err.message);
 		});
 
 		socket.on("roomJoined", ({ roomId }) => {
@@ -46,25 +71,22 @@ export default function Messages() {
 			setChatHistory((prev) => [...prev, msg]);
 		});
 
-		socket.on("chatHistory", (history) => {
-			setChatHistory(history);
-		});
-
 		return () => {
-			socket.disconnect();
+			if (socket.connected) {
+				socket.disconnect();
+			}
 		};
 	}, []);
 
 	useEffect(() => {
-		if (selectedClient && socketRef.current) {
+		if (selectedClient && socketRef.current && hustlerId) {
 			const clientId = selectedClient._id || selectedClient.id?.toString();
 			socketRef.current.emit("joinChat", { hustlerId, clientId });
-			socketRef.current.emit("getChatHistory", { hustlerId, clientId });
 		}
 	}, [selectedClient, hustlerId]);
 
 	const handleSend = () => {
-		if (!message.trim() || !selectedClient || !socketRef.current) return;
+		if (!message.trim() || !selectedClient || !socketRef.current || !hustlerId) return;
 		const clientId = selectedClient._id || selectedClient.id?.toString();
 		socketRef.current.emit("sendMessage", {
 			hustlerId,
