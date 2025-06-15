@@ -11,9 +11,11 @@ export default function Messages() {
 	const [message, setMessage] = useState("");
 	const socketRef = useRef<Socket | null>(null);
 
-	// Get hustlerId from userData cookie
+	// Get hustlerId and accessToken from userData and accessToken cookies
 	let hustlerId = "";
+	let accessToken = "";
 	const userDataCookie = Cookies.get('userData');
+	const accessTokenCookie = Cookies.get('accessToken');
 	if (userDataCookie) {
 		try {
 			const userData = JSON.parse(userDataCookie);
@@ -22,7 +24,28 @@ export default function Messages() {
 			console.error("Failed to parse userData cookie:", error);
 		}
 	}
+	if (accessTokenCookie) {
+		accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+	}
 
+	// Fetch clients dynamically (with access token if needed)
+	useEffect(() => {
+		const fetchClients = async () => {
+			try {
+				const res = await fetch("http://localhost:2000/api/v1/client/all", {
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${accessToken}`,
+					},
+				});
+				const data = await res.json();
+				setClients(Array.isArray(data.data) ? data.data : []);
+			} catch (err) {
+				console.error("Failed to fetch clients", err);
+			}
+		};
+		fetchClients();
+	}, [accessToken]);
 
 	// Fetch chat history via REST endpoint when a client is selected
 	useEffect(() => {
@@ -31,7 +54,13 @@ export default function Messages() {
 				const clientId = selectedClient._id || selectedClient.id?.toString();
 				try {
 					const res = await fetch(
-						`http://localhost:2000/api/v1/chat/history?hustlerId=${hustlerId}&clientId=${clientId}`
+						`http://localhost:2000/api/v1/chat/history?hustlerId=${hustlerId}&clientId=${clientId}`,
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${accessToken}`,
+							},
+						}
 					);
 					const data = await res.json();
 					setChatHistory(Array.isArray(data.history) ? data.history : []);
@@ -44,7 +73,7 @@ export default function Messages() {
 			}
 		};
 		fetchChatHistory();
-	}, [selectedClient, hustlerId]);
+	}, [selectedClient, hustlerId, accessToken]);
 
 	useEffect(() => {
 		// Only connect socket if the backend server is running and socket.io is enabled

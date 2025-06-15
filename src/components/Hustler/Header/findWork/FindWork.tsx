@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { SearchIcon } from "./SearchIcon"; // Adjust the import path as necessary
 
@@ -28,14 +29,30 @@ function FindWork() {
 
   const fetchGigs = async () => {
     try {
-      const response = await axios.post('http://localhost:2000/api/v1/hustler/getGigs', {
-        skillsArray,
-        sortBy: 'createdAt',
-        order: -1,
-        page: 1,
-        limit: 10,
-      });
-      const fetchedGigs: Gig[] = response.data.data; // Access the 'data' property of the response object
+      // Get access token from cookie for authentication
+      let accessToken = "";
+      const accessTokenCookie = Cookies.get('accessToken');
+      if (accessTokenCookie) {
+        accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+      }
+
+      const response = await axios.post(
+        'http://localhost:2000/api/v1/hustler/getGigs',
+        {
+          skillsArray,
+          sortBy: 'createdAt',
+          order: -1,
+          page: 1,
+          limit: 10,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const fetchedGigs: Gig[] = response.data.data;
       console.log(fetchedGigs);
       setGigs(fetchedGigs);
     } catch (error) {

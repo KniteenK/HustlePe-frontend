@@ -1,11 +1,24 @@
 import { Button, Input } from "@nextui-org/react";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { SearchIcon } from "../findWork/SearchIcon"; // Adjust the import path as necessary
 
 const getOrganizations = async () => {
   try {
+    // Get access token from cookie for authentication
+    let accessToken = "";
+    const accessTokenCookie = Cookies.get('accessToken');
+    if (accessTokenCookie) {
+      accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+    }
+
     console.log('Fetching organizations...');
-    const response = await fetch("http://localhost:2000/api/v1/organization/all");
+    const response = await fetch("http://localhost:2000/api/v1/organization/all", {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Failed to fetch organizations");
     }
