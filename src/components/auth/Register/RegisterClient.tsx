@@ -44,21 +44,27 @@ const RegisterClient = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch countries with flag URLs
-    fetch("https://restcountries.com/v3.1/all")
-      .then((response) => response.json())
-      .then((data: any[]) => {
-        const countryList: CountryOption[] = data
-          .map((country) => ({
-            label: country.name.common,
-            value: country.name.common,
-            flag: country.flags.png, // Added flag URL
-          }))
-          .sort((a, b) => a.label.localeCompare(b.label));
-        setCountries(countryList);
+    // Fetch countries using countriesnow.space API
+    axios
+      .get("https://countriesnow.space/api/v0.1/countries")
+      .then((response) => {
+        const data = response.data;
+        if (data && Array.isArray(data.data)) {
+          const countryList: CountryOption[] = data.data
+            .map((country: any) => ({
+              label: country.country,
+              value: country.country,
+              flag: "", // countriesnow.space does not provide flag, so leave empty or use a placeholder if needed
+            }))
+            .sort((a: CountryOption, b: CountryOption) => a.label.localeCompare(b.label));
+          setCountries(countryList);
+        } else {
+          setCountries([]);
+        }
       })
       .catch((error) => {
         console.error("Error fetching countries:", error);
+        setCountries([]);
       });
   }, []);
 
