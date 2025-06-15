@@ -8,7 +8,6 @@ import Login from './components/auth/Login/Login';
 import Register from './components/auth/Register/Register';
 import RegisterClient from './components/auth/Register/RegisterClient';
 import JobPosting from './components/Client/JobPosting/JobPosting';
-import Messages from './components/Client/Messages/Messages';
 import DocumentsAndSocialLinks from './components/Hustler/Header/ProfileSetting/DocumentsAndSocialLinks';
 import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti';
 import Gigs from './components/Hustler/Header/ProfileSetting/Gigs';
@@ -25,6 +24,7 @@ import Resources from './components/Hustler/Header/resources/resources.js';
 import GuestLayout from './layouts/GuestLayout.js';
 import HustlerLayout from './layouts/HustlerLayout.js';
 import './index.css'
+import Messages from './components/Hustler/Header/Messages/Messages.js';
 import ProfileSettingLayout from './layouts/ProfileSettingLayout.js';
 const router = createBrowserRouter([
   {
@@ -110,6 +110,10 @@ const router = createBrowserRouter([
       {
         path: 'FindWork',
         element: <FindWork />
+      },
+      {
+        path: 'Messages',
+        element: <Messages />
       },
       {
         path: 'Resources',
