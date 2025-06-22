@@ -10,6 +10,7 @@ import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "./SearchIcon"; // Adjust the import path as necessary
 
 interface Gig {
@@ -26,6 +27,7 @@ function FindWork() {
   const [gigs, setGigs] = useState<Gig[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
   const [skillsArray, setSkillsArray] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const fetchGigs = async () => {
     try {
@@ -147,7 +149,9 @@ function FindWork() {
                   <TableCell>{gig.budget}</TableCell>
                   <TableCell>{gig.payment_option}</TableCell>
                   <TableCell>
-                    <Button className="mt-2">Apply</Button>
+                    <Button className="mt-2" onClick={() => navigate(`/hustler/apply/${gig._id}`)}>
+                      Apply
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

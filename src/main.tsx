@@ -2,7 +2,6 @@ import React from 'react';
 
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import ClientLayout from './layouts/ClientLayout';
 import Intermediate from './components/auth/Intermediate';
 import Login from './components/auth/Login/Login';
 import Register from './components/auth/Register/Register';
@@ -12,19 +11,22 @@ import DocumentsAndSocialLinks from './components/Hustler/Header/ProfileSetting/
 import ExpCerti from './components/Hustler/Header/ProfileSetting/ExpCerti';
 import Gigs from './components/Hustler/Header/ProfileSetting/Gigs';
 import ProfileInfo from './components/Hustler/Header/ProfileSetting/PersonalInfo';
+import ClientLayout from './layouts/ClientLayout';
 // import ProfileSettings from './components/Hustler/Header/ProfileSetting/ProfileSetting.jsx'
+import JobDetails from './components/Client/JobPosting/JobDetails';
 import PostGig from './components/Client/JobPosting/PostGig/PostGig';
 
 import KnowOrganisations from './components/Guest/knowClient/KnowOrganisations';
 import KnowHustler from './components/Guest/knowHustler/KnowHustler';
+import ApplyToGig from './components/Hustler/Header/findWork/ApplyToGig';
 import FindWork from './components/Hustler/Header/findWork/FindWork';
+import Messages from './components/Hustler/Header/Messages/Messages.js';
 import Organizations from './components/Hustler/Header/organizations/Organizations';
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics';
 import Resources from './components/Hustler/Header/resources/resources.js';
+import './index.css';
 import GuestLayout from './layouts/GuestLayout.js';
 import HustlerLayout from './layouts/HustlerLayout.js';
-import './index.css'
-import Messages from './components/Hustler/Header/Messages/Messages.js';
 import ProfileSettingLayout from './layouts/ProfileSettingLayout.js';
 const router = createBrowserRouter([
   {
@@ -65,8 +67,11 @@ const router = createBrowserRouter([
       {
         path: 'PostGig',
         element: <PostGig />
+      },
+      {
+        path: 'job/:jobId',
+        element: <JobDetails />
       }
-      
       
 
     ]
@@ -122,6 +127,10 @@ const router = createBrowserRouter([
       {
         path: 'Organizations',
         element: <Organizations />
+      },
+      {
+        path: 'apply/:gigId',
+        element: <ApplyToGig />
       }
     ],
   },

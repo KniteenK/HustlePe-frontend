@@ -78,11 +78,19 @@ function JobPosting() {
             </CardBody>
             <Divider />
             <CardFooter>
-              {project.link && (
-                <Link isExternal showAnchorIcon href={project.link}>
-                  View Project
-                </Link>
-              )}
+              <div className="flex flex-col w-full gap-2">
+                {project.link && (
+                  <Link isExternal showAnchorIcon href={project.link}>
+                    View Project
+                  </Link>
+                )}
+                <button
+                  className="bg-blue-600 text-white py-1 px-3 rounded mt-2"
+                  onClick={() => navigate(`/client/job/${project._id}`)}
+                >
+                  View Details
+                </button>
+              </div>
             </CardFooter>
           </Card>
         ))}
