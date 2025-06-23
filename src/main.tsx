@@ -19,6 +19,7 @@ import PostGig from './components/Client/JobPosting/PostGig/PostGig';
 import KnowOrganisations from './components/Guest/knowClient/KnowOrganisations';
 import KnowHustler from './components/Guest/knowHustler/KnowHustler';
 import ApplyToGig from './components/Hustler/Header/findWork/ApplyToGig';
+import AssignedGigs from './components/Hustler/Header/findWork/AssignedGigs';
 import FindWork from './components/Hustler/Header/findWork/FindWork';
 import Messages from './components/Hustler/Header/Messages/Messages.js';
 import Organizations from './components/Hustler/Header/organizations/Organizations';
@@ -131,6 +132,10 @@ const router = createBrowserRouter([
       {
         path: 'apply/:gigId',
         element: <ApplyToGig />
+      },
+      {
+        path: 'assigned-gigs',
+        element: <AssignedGigs />
       }
     ],
   },

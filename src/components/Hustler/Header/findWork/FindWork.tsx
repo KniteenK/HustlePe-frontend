@@ -82,8 +82,15 @@ function FindWork() {
   return (
     <div className="h-full">
       <div className="mt-[5%] ml-[10%]">
-        <div>
+        <div className="flex items-center gap-4">
           <h1 className="text-4xl">Gigs</h1>
+          <Button
+            color="primary"
+            className="ml-4"
+            onClick={() => navigate("/hustler/assigned-gigs")}
+          >
+            See all assigned gigs
+          </Button>
         </div>
         <div className="mt-[2%]">
           <Input
