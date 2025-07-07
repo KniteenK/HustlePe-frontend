@@ -232,10 +232,11 @@ function FindWork() {
                       <TableCell>
                         <Button
                           size="sm"
-                          className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium"
+                          className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => navigate(`/hustler/apply/${gig._id}`)}
+                          disabled={gig.status !== "open"}
                         >
-                          Apply Now
+                          {gig.status === "open" ? "Apply Now" : "Not Available"}
                         </Button>
                       </TableCell>
                     </TableRow>

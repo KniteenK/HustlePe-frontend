@@ -22,6 +22,9 @@ import ApplyToGig from './components/Hustler/Header/findWork/ApplyToGig';
 import AssignedGigs from './components/Hustler/Header/findWork/AssignedGigs';
 import FindWork from './components/Hustler/Header/findWork/FindWork';
 import Messages from './components/Hustler/Header/Messages/Messages.js';
+import MyApplications from './components/Hustler/Header/organizations/MyApplications';
+import MyOrganization from './components/Hustler/Header/organizations/MyOrganization';
+import OrganizationDetail from './components/Hustler/Header/organizations/OrganizationDetail';
 import Organizations from './components/Hustler/Header/organizations/Organizations';
 import Statistics from './components/Hustler/Header/ProfileSetting/Statistics';
 import Resources from './components/Hustler/Header/resources/resources.js';
@@ -128,6 +131,18 @@ const router = createBrowserRouter([
       {
         path: 'Organizations',
         element: <Organizations />
+      },
+      {
+        path: 'organizations/:id',
+        element: <OrganizationDetail />
+      },
+      {
+        path: 'my-applications',
+        element: <MyApplications />
+      },
+      {
+        path: 'my-organization',
+        element: <MyOrganization />
       },
       {
         path: 'apply/:gigId',

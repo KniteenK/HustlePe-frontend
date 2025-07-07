@@ -2,7 +2,9 @@ import { Avatar, Button, Card, CardBody, CardHeader, Chip, Input } from "@nextui
 import Cookies from "js-cookie";
 import { Building2, Filter, Globe, Mail, MapPin, Phone, Users } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SearchIcon } from "../findWork/SearchIcon";
+import CreateOrganization from "./CreateOrganization";
 
 const getOrganizations = async () => {
   try {
@@ -34,9 +36,11 @@ const getOrganizations = async () => {
 };
 
 function Organizations() {
+  const navigate = useNavigate();
   const [organizations, setOrganizations] = useState<any[]>([]);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
+  const [userOrganization, setUserOrganization] = useState<any>(null);
 
   const fetchOrganizations = async () => {
     setLoading(true);
@@ -50,8 +54,34 @@ function Organizations() {
     }
   };
 
+  const checkUserOrganization = async () => {
+    try {
+      let accessToken = "";
+      const accessTokenCookie = Cookies.get('accessToken');
+      if (accessTokenCookie) {
+        accessToken = accessTokenCookie.replace(/^"|"$/g, "");
+      }
+
+      const response = await fetch("http://localhost:2000/api/v1/organization/my-organization", {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setUserOrganization(data.data);
+      }
+    } catch (error) {
+      // User doesn't have an organization, which is fine
+      console.log('User is not part of any organization');
+    }
+  };
+
   useEffect(() => {
     fetchOrganizations();
+    checkUserOrganization();
   }, []);
 
   const orgArray = Array.isArray(organizations) ? organizations : [];
@@ -85,6 +115,26 @@ function Organizations() {
               <Chip color="success" variant="flat" size="lg">
                 {filteredOrganizations.length} Organizations
               </Chip>
+              {userOrganization && (
+                <Button
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold"
+                  onClick={() => navigate("/hustler/my-organization")}
+                >
+                  My Organization
+                </Button>
+              )}
+              <Button
+                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold"
+                onClick={() => navigate("/hustler/my-applications")}
+              >
+                My Applications
+              </Button>
+              {!userOrganization && (
+                <CreateOrganization onSuccess={() => {
+                  fetchOrganizations();
+                  checkUserOrganization();
+                }} />
+              )}
             </div>
           </div>
 
@@ -260,15 +310,16 @@ function Organizations() {
                       <Button 
                         className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium"
                         size="sm"
+                        onClick={() => navigate(`/hustler/organizations/${org._id}`)}
                       >
-                        Contact
+                        View Profile
                       </Button>
                       <Button 
                         variant="bordered"
                         className="flex-1 border-green-200 hover:bg-green-50 text-green-700 font-medium"
                         size="sm"
                       >
-                        View Profile
+                        Contact
                       </Button>
                     </div>
                   </div>
