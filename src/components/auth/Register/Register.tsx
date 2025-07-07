@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FlagIcon } from "react-flag-kit";
 import type { FlagIconCode } from "react-flag-kit";
+import { FlagIcon } from "react-flag-kit";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,7 +17,7 @@ const Signup = () => {
         position: "bottom-right",
         autoClose: 2000,
         style: {
-          backgroundColor: "red",
+          backgroundColor: "#dc2626",
           color: "white",
         },
       });
@@ -130,132 +130,151 @@ const Signup = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const customSelectStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      padding: "8px",
+      border: "2px solid #bbf7d0",
+      borderRadius: "12px",
+      fontSize: "14px",
+      "&:hover": {
+        borderColor: "#86efac",
+      },
+      "&:focus": {
+        borderColor: "#10b981",
+        boxShadow: "0 0 0 2px rgba(16, 185, 129, 0.2)",
+      },
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? "#10b981" : state.isFocused ? "#dcfce7" : "white",
+      color: state.isSelected ? "white" : "#374151",
+      "&:hover": {
+        backgroundColor: "#dcfce7",
+        color: "#374151",
+      },
+    }),
+  };
   return (
-    <div className="font-sans overflow-y-hidden h-screen -mt-4">
-      <div className="flex justify-start items-center w-full p-4 overflow-hidden">
+    <div className="font-sans min-h-screen bg-gradient-to-br from-green-50 to-white overflow-auto">
+      <div className="flex justify-start items-center w-full p-6">
         <Link to="/">
-          <img src={logo} alt="HustlePe Logo" className="h-[100px] w-auto cursor-pointer" />
+          <img src={logo} alt="HustlePe Logo" className="h-28 w-auto cursor-pointer hover:scale-105 transition-transform duration-300" />
         </Link>
       </div>
-      <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
-        <div className="grid md:grid-cols-2 items-center gap-4 max-w-6xl w-full">
-          <div className="border border-gray-300 rounded-lg p-6 max-w-md shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
-            <form className="space-y-4">
-              <div className="mb-8">
-                <h3 className="text-gray-800 text-3xl font-extrabold">Create an Account</h3>
-                <p className="text-gray-500 text-sm mt-4 leading-relaxed">Join us today! Start your journey with us.</p>
+      <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-8">
+        <div className="grid md:grid-cols-2 items-center gap-12 max-w-7xl w-full">
+          <div className="bg-white border border-green-200 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 max-md:mx-auto">
+            <form className="space-y-6">
+              <div className="text-center mb-8">
+                <h3 className="text-gray-800 text-4xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
+                  Join HustlePe
+                </h3>
+                <p className="text-gray-600 text-lg mt-4 leading-relaxed">
+                  Start your freelancing journey with us today
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">First Name</label>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">First Name</label>
                   <input
                     name="firstName"
                     type="text"
                     required
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                    className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
                     placeholder="Enter first name"
                     value={firstName}
                     onChange={handleFirstNameChange}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Last Name</label>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Last Name</label>
                   <input
                     name="lastName"
                     type="text"
                     required
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                    className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
                     placeholder="Enter last name"
                     value={lastName}
                     onChange={handleLastNameChange}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Contact Number</label>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Contact Number</label>
                   <input
                     name="contactNumber"
                     type="text"
                     required
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                    className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
                     placeholder="Enter contact number"
                     value={contactNumber}
                     onChange={handleContactNumberChange}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Email Address</label>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Email Address</label>
                   <input
                     name="email"
                     type="email"
                     required
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                    className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
                     placeholder="Enter email address"
                     value={email}
                     onChange={handleEmailChange}
                   />
                 </div>
-                <Select
-                  value={country ? countries.find((c) => c.label === country) : null}
-                  onChange={(option) => setCountry(option ? option.label : "")}
-                  options={countries}
-                  formatOptionLabel={formatCountryOption}
-                  placeholder="Select country"
-                  className="text-sm"
-                  styles={{
-                    control: (provided) => ({
-                      ...provided,
-                      padding: "8px",
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                    }),
-                  }}
-                />
-                <Select
-                  value={city ? { value: city, label: city } : null}
-                  onChange={(option) => (option ? setCity(option.label) : setCity(""))}
-                  options={cities.map((city) => ({ value: city, label: city }))}
-                  placeholder="Select city"
-                  className="text-sm"
-                  styles={{
-                    control: (provided) => ({
-                      ...provided,
-                      padding: "8px",
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                    }),
-                  }}
-                />
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">User name</label>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Country</label>
+                  <Select
+                    value={country ? countries.find((c) => c.label === country) : null}
+                    onChange={(option) => setCountry(option ? option.label : "")}
+                    options={countries}
+                    formatOptionLabel={formatCountryOption}
+                    placeholder="Select country"
+                    styles={customSelectStyles}
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">City</label>
+                  <Select
+                    value={city ? { value: city, label: city } : null}
+                    onChange={(option) => (option ? setCity(option.label) : setCity(""))}
+                    options={cities.map((city) => ({ value: city, label: city }))}
+                    placeholder="Select city"
+                    styles={customSelectStyles}
+                  />
+                </div>
+                <div>
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Username</label>
                   <input
                     name="username"
                     type="text"
                     required
-                    className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
-                    placeholder="Enter user name"
+                    className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
+                    placeholder="Enter username"
                     value={username}
                     onChange={handleUsernameChange}
                   />
                 </div>
                 <div>
-                  <label className="text-gray-800 text-sm mb-2 block">Password</label>
-                  <div className="relative flex items-center">
+                  <label className="text-gray-700 text-sm font-medium mb-3 block">Password</label>
+                  <div className="relative">
                     <input
                       name="password"
                       type={showPassword ? "text" : "password"}
                       required
                       value={password}
                       onChange={handlePasswordChange}
-                      className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                      className="w-full text-sm text-gray-800 border-2 border-green-200 px-4 py-4 rounded-xl outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 hover:border-green-300"
                       placeholder="Enter password"
                     />
                     <svg
                       onClick={togglePasswordVisibility}
                       xmlns="http://www.w3.org/2000/svg"
-                      fill="#bbb"
-                      stroke="#bbb"
-                      className="w-[18px] h-[18px] absolute right-4 cursor-pointer"
+                      fill="#10b981"
+                      stroke="#10b981"
+                      className="w-5 h-5 absolute right-4 top-4 cursor-pointer hover:fill-green-600 transition-colors duration-200"
                       viewBox="0 0 128 128"
                     >
                       <path
@@ -274,27 +293,31 @@ const Signup = () => {
               <div className="mt-8">
                 <button
                   type="button"
-                  className="w-full shadow-xl py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 text-lg"
                   onClick={OnSubmit}
                 >
-                  Sign Up
+                  Create Account
                 </button>
               </div>
 
-              <p className="mt-8 text-center text-sm text-gray-800">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">
-                  Log in here
-                </Link>
-              </p>
+              <div className="text-center mt-8">
+                <p className="text-gray-600 text-sm">
+                  Already have an account?{" "}
+                  <Link to="/login" className="text-green-600 font-semibold hover:text-green-700 hover:underline transition-colors duration-200">
+                    Sign in here
+                  </Link>
+                </p>
+              </div>
             </form>
           </div>
-          <div className="lg:h-[400px] md:h-[300px] max-md:mt-8">
-            <img
-              src="https://readymadeui.com/login-image.webp"
-              className="w-full h-full max-md:w-4/5 mx-auto block object-cover"
-              alt="Signup Experience"
-            />
+          <div className="lg:h-[500px] md:h-[400px] max-md:mt-8">
+            <div className="bg-gradient-to-br from-green-100 to-green-200 rounded-2xl p-8 h-full flex items-center justify-center">
+              <img
+                src="https://readymadeui.com/login-image.webp"
+                className="w-full h-full max-md:w-4/5 mx-auto block object-cover rounded-xl shadow-lg"
+                alt="Signup Experience"
+              />
+            </div>
           </div>
         </div>
       </div>

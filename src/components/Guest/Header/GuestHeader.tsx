@@ -1,7 +1,20 @@
 import { Button, Input, Navbar, NavbarContent, NavbarItem } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
 function GuestHeader() {
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleLoginClick = () => {
     navigate("/login"); // Redirect to the login page
@@ -12,9 +25,13 @@ function GuestHeader() {
   };
 
   return (
-    <header className="z-50 pb-3 bg-white">
-      <Navbar>
-        <NavbarContent className="hidden sm:flex gap-4 mt-3" justify="center">
+    <header className={`fixed w-full z-50 transition-all duration-500 ease-in-out ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-lg shadow-lg border-b border-green-200' 
+        : 'bg-gradient-to-r from-white/80 via-green-50/80 to-white/80 backdrop-blur-sm border-b border-green-100/50'
+    }`}>
+      <Navbar className="bg-transparent">
+        <NavbarContent className="hidden sm:flex gap-8 mt-3" justify="center">
           {/* <Dropdown>
             <NavbarItem>
               <DropdownTrigger>
@@ -93,23 +110,29 @@ function GuestHeader() {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown> */}
-          <NavbarItem>
+          <NavbarItem className="transform hover:scale-105 transition-all duration-300">
             <NavLink
               to="/knowHustler"
               className={({ isActive }) =>
-                `border-b  lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${isActive ? "text-orange-700" : "text-gray-700"}`
+                `px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-green-100 hover:text-green-700 hover:shadow-md ${
+                  isActive 
+                    ? "text-green-700 bg-green-100 shadow-sm" 
+                    : "text-gray-700"
+                }`
               }
             >
               Know about Hustlers
             </NavLink>
           </NavbarItem>
 
-          <NavbarItem>
+          <NavbarItem className="transform hover:scale-105 transition-all duration-300">
             <NavLink
               to="/knowOrganisations"
               className={({ isActive }) =>
-                `border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0 ${
-                  isActive ? "text-orange-700" : "text-gray-700"
+                `px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:bg-green-100 hover:text-green-700 hover:shadow-md ${
+                  isActive 
+                    ? "text-green-700 bg-green-100 shadow-sm" 
+                    : "text-gray-700"
                 }`
               }
             >
@@ -117,24 +140,44 @@ function GuestHeader() {
             </NavLink>
           </NavbarItem>
         </NavbarContent>
-        <NavbarContent justify="end" className="items-center mt-3">
-          <Input
-            classNames={{
-              base: "max-w-full sm:max-w-[10rem] h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            placeholder="Type to search..."
-            size="sm"
-            // startContent={<SearchIcon size={18} />}
-            type="search"
-          />
-          <NavbarItem className="hidden lg:flex">
-            <Button onClick={handleLoginClick}>Login</Button>
+        
+        <NavbarContent justify="end" className="items-center mt-3 gap-4">
+          <NavbarItem className="transform hover:scale-105 transition-all duration-300">
+            <Input
+              classNames={{
+                base: "max-w-full sm:max-w-[12rem] h-10",
+                mainWrapper: "h-full",
+                input: "text-small font-medium",
+                inputWrapper: `h-full font-normal text-gray-600 border-2 border-green-200 hover:border-green-300 focus-within:border-green-400 shadow-sm hover:shadow-md transition-all duration-300 ${
+                  isScrolled ? 'bg-white/90' : 'bg-white/80'
+                }`,
+              }}
+              placeholder="Search..."
+              size="sm"
+              type="search"
+              radius="lg"
+            />
           </NavbarItem>
-          <NavbarItem>
-            <Button onClick={handleSignupClick}>SignUp</Button>
+          
+          <NavbarItem className="hidden lg:flex transform hover:scale-105 transition-all duration-300">
+            <Button 
+              onClick={handleLoginClick}
+              variant="bordered"
+              className="border-2 border-green-600 text-green-600 bg-white/90 hover:bg-green-50 hover:border-green-700 hover:text-green-700 font-medium transition-all duration-300 shadow-sm hover:shadow-md"
+              radius="lg"
+            >
+              Login
+            </Button>
+          </NavbarItem>
+          
+          <NavbarItem className="transform hover:scale-105 transition-all duration-300">
+            <Button 
+              onClick={handleSignupClick}
+              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              radius="lg"
+            >
+              Sign Up
+            </Button>
           </NavbarItem>
         </NavbarContent>
       </Navbar>
